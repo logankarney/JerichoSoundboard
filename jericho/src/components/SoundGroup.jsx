@@ -11,7 +11,8 @@ class SoundGroup extends Component {
             name: props.name,
             index: this.props.index,
             binding: this.props.binding,
-            sounds: (propSounds !== undefined) ? propSounds : []
+            sounds: (propSounds !== undefined) ? propSounds : [],
+            fileAddHandler: this.props.fileAddHandler
         }
     }
 
@@ -20,7 +21,7 @@ class SoundGroup extends Component {
         return (<div><div>{this.state.name}<button onClick={() => this.addSound()}>Add</button></div>
             {
                 this.state.sounds.map((sound, index) =>
-                    <Sound name={this.state.index + ":" + index} key={this.state.index + ":" + index} />
+                    <Sound name={this.state.index + ":" + index} key={this.state.index + ":" + index} fileAddHandler={this.props.fileAddHandler} />
                 )
             }
         </div>
@@ -28,7 +29,7 @@ class SoundGroup extends Component {
     }
 
     addSound() {
-        this.setState({ sounds: [...this.state.sounds, { name: this.state.key + this.state.sounds.length, binding: "" }] });
+        this.setState({ sounds: [...this.state.sounds, { name: this.state.index + ":" + this.state.sounds.length }] });
 
     }
 

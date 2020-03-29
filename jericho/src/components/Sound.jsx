@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 const { ipcRenderer } = window.require('electron');
 
 class Sound extends Component {
+
+
     constructor(props) {
         super(props);
         this.state = {
             name: this.props.name,
-            filepath: ''
+            filepath: '',
+            fileAddHandler: this.props.fileAddHandler
         }
 
     }
@@ -30,6 +33,7 @@ class Sound extends Component {
         //sets the component's filepath
         ipcRenderer.on('filepath' + this.state.name, (event, filepath) => {
             this.setState({ filepath: filepath });
+            this.state.fileAddHandler({ id: this.state.name, filepath: filepath });
         });
     }
 

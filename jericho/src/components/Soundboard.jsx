@@ -27,9 +27,7 @@ class SoundBoard extends Component {
                 <button onClick={() => this.addSoundGroup()}>Add Group</button>
                 <div id="soundGroups">
                     {
-                        this.state.soundGroups.map((group, index) =>
-                            <SoundGroup key={index} index={index.toString()} name={group.name} binding={group.binding} sounds={group.sounds} />
-                        )
+                        this.state.soundGroups.map((group, index) => <SoundGroup key={index} index={index.toString()} name={group.name} binding={group.binding} sounds={group.sounds} fileAddHandler={this.addFileHander.bind(this)} />)
                     }
                 </div>
                 <div>
@@ -46,7 +44,7 @@ class SoundBoard extends Component {
     }
 
     addSoundGroup() {
-        this.setState({ soundGroups: [...this.state.soundGroups, { name: "Group " + this.state.soundGroups.length, binding: "", sounds: [] }] });
+        this.setState({ soundGroups: [...this.state.soundGroups, { name: "Group " + this.state.soundGroups.length, key: this.state.soundGroups.length }] });
     }
 
     import() {
@@ -55,9 +53,11 @@ class SoundBoard extends Component {
 
     export() {
 
-        const ref = this.soundBoardRef.current;
 
-        console.log(ref);
+    }
+
+    addFileHander(text) {
+        console.log(text.id);
     }
 
     updateFormData(ev) {
