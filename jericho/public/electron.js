@@ -56,8 +56,6 @@ app.on("activate", () => {
 });
 
 ipcMain.on("add", async (event, args) => {
-  console.log("here");
-  console.log(args);
   openFile().then(filepath => {
     event.sender.send("filepath" + args.id, filepath);
   });
