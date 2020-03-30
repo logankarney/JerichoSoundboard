@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import SoundGroup from './SoundGroup.jsx'
 const { ipcRenderer } = window.require('electron');
 
+const cleanState = () => ({
+    name: "Group Name",
+    soundGroups: []
+});
 
 class SoundBoard extends Component {
 
@@ -50,6 +54,8 @@ class SoundBoard extends Component {
     }
 
     import() {
+
+        this.setState(cleanState);
 
         ipcRenderer.send('import');
 
