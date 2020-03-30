@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import SoundGroup from './SoundGroup.jsx'
 import { Button } from '@material-ui/core/';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { GroupButton, Temp2B } from './Temp.jsx';
 const { ipcRenderer } = window.require('electron');
 
 const cleanState = () => ({
     name: "Group Name",
     soundGroups: []
 });
+
 
 class SoundBoard extends Component {
 
@@ -33,15 +35,15 @@ class SoundBoard extends Component {
 
         this.soundboard = (
             <div>
-                <Button size="small" variant="outlined" color="primary" onClick={() => this.addSoundGroup()}><FontAwesomeIcon icon={faPlusCircle} id="groupAddButton" />Add Group</Button>
+                <GroupButton onClick={() => this.addSoundGroup()}><FontAwesomeIcon icon={faPlusCircle} id="groupAddButton" />Add Group</GroupButton >
                 <div id="soundGroups">
                     {
                         this.state.soundGroups.map((group, index) => <SoundGroup key={index} index={index.toString()} name={group.name} binding={group.binding} sounds={group.sounds} fileAddHandler={this.addFileHander.bind(this)} />)
                     }
                 </div>
                 <div>
-                    <button onClick={() => this.import()}>Import</button>
-                    <button onClick={() => this.export()}>Export</button>
+                    <Button variant="outlined" color="primary" onClick={() => this.import()} >Import</Button>
+                    <Button variant="outlined" color="primary" onClick={() => this.export()} >Export</Button>
                 </div>
             </div>
         );
