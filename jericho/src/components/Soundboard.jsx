@@ -79,7 +79,7 @@ class SoundBoard extends Component {
         let groupSounds = { ...group.sounds }
 
         //Set the filepath of the new sound
-        groupSounds[`${fileId}`] = filepath
+        groupSounds[fileId] = filepath
         group.sounds = groupSounds
         groups[groupId] = group;
         this.setState({ soundGroups: groups });

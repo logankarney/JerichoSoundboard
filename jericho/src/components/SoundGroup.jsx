@@ -18,15 +18,15 @@ class SoundGroup extends Component {
 
     render() {
         //TODO: generate this later
-        /*return (<div><div>{this.state.name}<button onClick={() => this.addSound()}>Add</button></div>
+        return (<div><div>{this.state.name}<button onClick={() => this.addSound()}>Add</button></div>
             {
-                this.state.sounds.map((sound, index) =>
-                    <Sound name={this.state.index + ":" + index} key={this.state.index + ":" + index} fileAddHandler={this.props.fileAddHandler} />
+                Object.keys(this.state.sounds).map((sound, index) =>
+                    <Sound name={this.state.index + ":" + index} key={this.state.index + ":" + index} fileAddHandler={this.props.fileAddHandler} filepath={this.state.sounds[sound]} />
                 )
             }
         </div>
-        );*/
-        return (<div>{this.state.name}</div>)
+        );
+        //return (<div>{this.state.name}</div>)
     }
 
     addSound() {

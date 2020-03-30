@@ -8,7 +8,7 @@ class Sound extends Component {
         super(props);
         this.state = {
             name: this.props.name,
-            filepath: '',
+            filepath: this.props.filepath,
             fileAddHandler: this.props.fileAddHandler
         }
 
