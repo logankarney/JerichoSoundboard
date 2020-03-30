@@ -60,7 +60,6 @@ class SoundBoard extends Component {
         ipcRenderer.send('import');
 
         ipcRenderer.on('load', (event, file) => {
-            console.log(file);
             this.setState({ name: file.name })
             this.setState({ soundGroups: file.soundGroups })
         });

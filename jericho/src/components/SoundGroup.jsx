@@ -28,13 +28,12 @@ class SoundGroup extends Component {
             }
         </div>
         );
-        //return (<div>{this.state.name}</div>)
     }
 
     addSound() {
         let sounds = this.state.sounds;
         sounds[sounds.length] = '';
-        //this.setState({ sounds: [...this.state.sounds, { name: this.state.index + ":" + this.state.sounds.length }] });
+        //TODO: filter undefineds out
         this.setState({ sounds: sounds })
 
     }
