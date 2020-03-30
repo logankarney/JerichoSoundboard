@@ -26,8 +26,7 @@ const styles = {
     },
 };
 
-function groupButton(props, args) {
-    console.log(args)
+function groupButton(props) {
     const { classes } = props;
     return <Button className={classes.addGroup} ><FontAwesomeIcon icon={faPlusCircle} id="groupAddButton" />Add Group</Button>;
 }
