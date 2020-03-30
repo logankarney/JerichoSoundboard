@@ -35,7 +35,9 @@ class SoundBoard extends Component {
 
         this.soundboard = (
             <div>
-                <GroupButton onClick={() => this.addSoundGroup()}><FontAwesomeIcon icon={faPlusCircle} id="groupAddButton" />Add Group</GroupButton >
+                <div onClick={() => this.addSoundGroup()}>
+                    <GroupButton />
+                </div>
                 <div id="soundGroups">
                     {
                         this.state.soundGroups.map((group, index) => <SoundGroup key={index} index={index.toString()} name={group.name} binding={group.binding} sounds={group.sounds} fileAddHandler={this.addFileHander.bind(this)} />)
