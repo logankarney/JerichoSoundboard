@@ -2,6 +2,7 @@ const { app, BrowserWindow, dialog, ipcMain } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
 const ioHook = require("iohook");
+const fs = require("fs");
 
 let mainWindow;
 
@@ -56,9 +57,24 @@ app.on("activate", () => {
 });
 
 ipcMain.on("add", async (event, args) => {
-  openFile().then(filepath => {
+  openSound().then(filepath => {
     event.sender.send("filepath" + args.id, filepath);
   });
+});
+
+ipcMain.on("export", async (event, args) => {
+  saveFile(args);
+});
+
+ipcMain.on("import", async event => {
+  openFile()
+    .then(file => {
+      console.log(file);
+      event.sender.send("load", file);
+    })
+    .catch(err => {
+      console.error(err);
+    });
 });
 
 //enables global keyboard input capture
@@ -100,7 +116,7 @@ function userKeyUp(event) {
   }
 }
 
-async function openFile() {
+async function openSound() {
   //open a file dialog
   const files = await dialog.showOpenDialog(mainWindow, {
     properties: ["openFile"],
@@ -119,6 +135,56 @@ async function openFile() {
   //returns the filepath
   if (files) {
     return files.filePaths[0];
+  } else {
+    //if there are no files
+    return;
+  }
+}
+
+async function saveFile(args) {
+  let selection = await dialog.showSaveDialog(mainWindow, {
+    filters: [
+      {
+        name: "Soundboard",
+        extensions: ["JSON"]
+      },
+      {
+        name: "Soundboard",
+        extensions: ["txt"]
+      },
+      {
+        name: "All",
+        extensions: ["*"]
+      }
+    ]
+  });
+
+  fs.writeFileSync(selection.filePath, args);
+
+  fs.exists(selection.filePath, exists => {
+    //TODO: add success and error feedback to user
+
+    if (exists) {
+    } else {
+    }
+  });
+}
+
+async function openFile() {
+  //open a file dialog
+  const files = await dialog.showOpenDialog(mainWindow, {
+    properties: ["openFile"],
+    filters: [
+      {
+        name: "Soundboard",
+        extensions: ["JSON", "txt"]
+      }
+    ]
+  });
+
+  //returns the filepath
+  if (files) {
+    return JSON.parse(fs.readFileSync(files.filePaths[0]));
   } else {
     //if there are no files
     return;
