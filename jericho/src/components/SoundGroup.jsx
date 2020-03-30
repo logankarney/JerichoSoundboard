@@ -20,8 +20,10 @@ class SoundGroup extends Component {
         //TODO: generate this later
         return (<div><div>{this.state.name}<button onClick={() => this.addSound()}>Add</button></div>
             {
-                Object.keys(this.state.sounds).map((sound, index) =>
-                    <Sound name={this.state.index + ":" + index} key={this.state.index + ":" + index} fileAddHandler={this.props.fileAddHandler} filepath={this.state.sounds[sound]} />
+                Object.keys(this.state.sounds).filter((sound, index) => { return this.state.sounds[index] !== undefined }).map((sound, index) => {
+                    return <Sound name={this.state.index + ":" + index} key={this.state.index + ":" + index} fileAddHandler={this.props.fileAddHandler} filepath={this.state.sounds[index]} />
+                }
+
                 )
             }
         </div>
@@ -30,7 +32,10 @@ class SoundGroup extends Component {
     }
 
     addSound() {
-        this.setState({ sounds: [...this.state.sounds, { name: this.state.index + ":" + this.state.sounds.length }] });
+        let sounds = this.state.sounds;
+        sounds[sounds.length] = '';
+        //this.setState({ sounds: [...this.state.sounds, { name: this.state.index + ":" + this.state.sounds.length }] });
+        this.setState({ sounds: sounds })
 
     }
 

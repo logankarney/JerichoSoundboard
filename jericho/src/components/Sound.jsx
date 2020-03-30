@@ -39,7 +39,7 @@ class Sound extends Component {
 
     playSound() {
         //only play the audio file if one has been added
-        if (this.state.filepath.localeCompare('') !== 0) {
+        if (this.state.filepath !== undefined && this.state.filepath.localeCompare('') !== 0) {
             const player = new Audio(this.state.filepath);
             player.play().catch(e => console.error("audio play failed with: " + e));
         }
