@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import SoundGroup from './SoundGroup.jsx'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 const { ipcRenderer } = window.require('electron');
 
 const cleanState = () => ({
@@ -34,7 +32,7 @@ class SoundBoard extends Component {
         this.soundboard = (
             <div>
 
-                <button onClick={() => this.addSoundGroup()} ><FontAwesomeIcon icon={faPlusCircle} id="groupAddButton" />Add Group</button>;
+                <button onClick={() => this.addSoundGroup()} >Add Group</button>;
 
                 <div id="soundGroups">
                     {
