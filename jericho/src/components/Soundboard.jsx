@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import SoundGroup from './SoundGroup.jsx'
+import { Button } from "@blueprintjs/core";
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 const { ipcRenderer } = window.require('electron');
+
 
 const cleanState = () => ({
     name: "Group Name",
@@ -32,7 +36,7 @@ class SoundBoard extends Component {
         this.soundboard = (
             <div>
 
-                <button onClick={() => this.addSoundGroup()} >Add Group</button>;
+                <Button className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
 
                 <div id="soundGroups">
                     {
