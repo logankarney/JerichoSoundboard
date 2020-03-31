@@ -7,6 +7,10 @@ html {
   color: #e8e8eb;
 }
 
+.soundGroupHeader {
+  margin-top: -0.5rem;
+}
+
 .soundGroupHeader,
 .soundHeader {
   display: flex;
