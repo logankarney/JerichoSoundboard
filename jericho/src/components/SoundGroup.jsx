@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Sound from './Sound.jsx';
+import { Button, Menu, MenuItem } from "@blueprintjs/core";
 
 class SoundGroup extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class SoundGroup extends Component {
 
     render() {
         //TODO: generate this later
-        return (<div><div>{this.state.name}<button onClick={() => this.addSound()}>Add</button></div>
+        return (<div><div>{this.state.name}<Button onClick={() => this.addSound()}>Add</Button></div>
             {
                 Object.keys(this.state.sounds).filter((sound, index) => { return this.state.sounds[index] !== undefined }).map((sound, index) => {
                     return <Sound name={this.state.index + ":" + index} key={this.state.index + ":" + index} fileAddHandler={this.props.fileAddHandler} filepath={this.state.sounds[index]} />

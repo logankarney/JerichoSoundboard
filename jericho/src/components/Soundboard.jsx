@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import SoundGroup from './SoundGroup.jsx'
 import { Button } from "@blueprintjs/core";
+import "normalize.css/normalize.css"
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+import "../css/main.css"
 const { ipcRenderer } = window.require('electron');
 
 
@@ -36,7 +38,7 @@ class SoundBoard extends Component {
         this.soundboard = (
             <div>
 
-                <Button className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
+                <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
 
                 <div id="soundGroups">
                     {
@@ -44,8 +46,8 @@ class SoundBoard extends Component {
                     }
                 </div>
                 <div>
-                    <button variant="outlined" color="primary" onClick={() => this.import()} >Import</button>
-                    <button variant="outlined" color="primary" onClick={() => this.export()} >Export</button>
+                    <Button className="bp3-button bp3-icon-add bp3-intent-secondary" onClick={() => this.import()} >Import</Button>
+                    <Button className="bp3-button bp3-icon-add bp3-intent-secondary" onClick={() => this.export()} >Export</Button>
                 </div>
             </div>
         );
