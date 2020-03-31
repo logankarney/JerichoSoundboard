@@ -7,7 +7,22 @@ html {
   color: #e8e8eb;
 }
 
+.soundGroupHeader {
+  display: flex;
+}
+
+.soundGroupName {
+  color: #e8e8eb;
+  padding-top: 7px;
+  padding-left: 1rem;
+  padding-right: 5rem;
+}
+
 .chevron:hover {
   outline: none;
   box-shadow: none;
+}
+
+*:focus {
+  outline: none;
 }

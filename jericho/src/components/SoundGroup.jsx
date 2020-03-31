@@ -21,7 +21,14 @@ class SoundGroup extends Component {
     render() {
         //TODO: generate this later
         return (
-            <div><div><Button onClick={() => this.toggleOpen()} minimal={true} className="chevron"><Icon icon={this.state.isOpen ? "chevron-down" : "chevron-right"} iconSize={22} /></Button> {this.state.name}<Button onClick={() => this.addSound()}>Add</Button></div>
+            <div>
+                <div className="soundGroupHeader">
+                    <Button onClick={() => this.toggleOpen()} minimal={true} className="chevron">
+                        <Icon icon={this.state.isOpen && this.state.sounds.length > 0 ? "chevron-down" : "chevron-right"} iconSize={22} />
+                    </Button>
+                    <label className="soundGroupName">{this.state.name}</label>
+                    <Button onClick={() => this.addSound()} minimal={true}><Icon icon="plus" iconSize={22} /></Button>
+                </div>
                 <div>
                     <Collapse isOpen={this.state.isOpen} keepChildrenMounted={true}> <div>
                     </div>
@@ -37,7 +44,7 @@ class SoundGroup extends Component {
 
 
 
-            </div>
+            </div >
         );
     }
 
