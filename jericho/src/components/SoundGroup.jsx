@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Sound from './Sound.jsx';
-import { Button, Collapse } from "@blueprintjs/core";
+import { Button, Collapse, Icon } from "@blueprintjs/core";
 
 class SoundGroup extends Component {
     constructor(props) {
@@ -21,7 +21,7 @@ class SoundGroup extends Component {
     render() {
         //TODO: generate this later
         return (
-            <div className="soundGroup"><div><Button onClick={() => this.toggleOpen()}>></Button> {this.state.name}<Button onClick={() => this.addSound()}>Add</Button></div>
+            <div><div><Button onClick={() => this.toggleOpen()} minimal={true} className="chevron"><Icon icon={this.state.isOpen ? "chevron-down" : "chevron-right"} iconSize={22} /></Button> {this.state.name}<Button onClick={() => this.addSound()}>Add</Button></div>
                 <div>
                     <Collapse isOpen={this.state.isOpen} keepChildrenMounted={true}> <div>
                     </div>

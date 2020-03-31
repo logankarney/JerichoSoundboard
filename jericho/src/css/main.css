@@ -6,3 +6,8 @@ html {
   background-color: #7289da;
   color: #e8e8eb;
 }
+
+.chevron:hover {
+  outline: none;
+  box-shadow: none;
+}
