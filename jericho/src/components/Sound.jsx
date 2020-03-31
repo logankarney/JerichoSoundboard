@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Icon } from "@blueprintjs/core";
+import { Button, Icon, Input, Label } from "@blueprintjs/core";
 const { ipcRenderer } = window.require('electron');
 
 class Sound extends Component {
@@ -10,15 +10,18 @@ class Sound extends Component {
         this.state = {
             name: this.props.name,
             filepath: this.props.filepath,
-            fileAddHandler: this.props.fileAddHandler
+            fileAddHandler: this.props.fileAddHandler,
+            index: this.props.index,
+            displayName: "Sound " + this.props.index
         }
 
     }
 
     render() {
-        return (<div>
-            <Button onClick={() => this.addSound()} minimal={true} ><Icon icon="edit" iconSize={18} /></Button>
-            <Button onClick={() => this.playSound()} minimal={true} ><Icon icon="play" iconSize={18} /></Button>
+        return (<div className="soundHeader">
+            <Button onClick={() => this.addSound()} minimal={true} className="editButton"><Icon icon="edit" iconSize={16} /></Button>
+            <Label className="soundName">{this.state.displayName}</Label>
+            <Button onClick={() => this.playSound()} minimal={true} className="playButton"><Icon icon="play" iconSize={18} intent={this.state.filepath !== '' ? "success" : "none"} /></Button>
         </div>);
     }
 

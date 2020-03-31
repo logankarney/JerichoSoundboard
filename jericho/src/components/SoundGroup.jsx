@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Sound from './Sound.jsx';
-import { Button, Collapse, Icon } from "@blueprintjs/core";
+import { Button, Collapse, Icon, Label } from "@blueprintjs/core";
 
 class SoundGroup extends Component {
     constructor(props) {
@@ -16,6 +16,7 @@ class SoundGroup extends Component {
             sounds: (propSounds !== undefined) ? propSounds : [],
             fileAddHandler: this.props.fileAddHandler
         }
+
     }
 
     render() {
@@ -26,15 +27,21 @@ class SoundGroup extends Component {
                     <Button onClick={() => this.toggleOpen()} minimal={true} className="chevron">
                         <Icon icon={this.state.isOpen && this.state.sounds.length > 0 ? "chevron-down" : "chevron-right"} iconSize={22} />
                     </Button>
-                    <label className="soundGroupName">{this.state.name}</label>
+                    <Label className="soundGroupName">{this.state.name}</Label>
                     <Button onClick={() => this.addSound()} minimal={true}><Icon icon="plus" iconSize={22} /></Button>
                 </div>
                 <div>
                     <Collapse isOpen={this.state.isOpen} keepChildrenMounted={true}> <div>
                     </div>
                         {
-                            Object.keys(this.state.sounds).filter((sound, index) => { return this.state.sounds[index] !== undefined }).map((sound, index) => {
-                                return <Sound name={this.state.index + ":" + index} key={this.state.index + ":" + index} fileAddHandler={this.props.fileAddHandler} filepath={this.state.sounds[index]} />
+                            Object.keys(this.state.sounds).filter((sound, index) => {
+                                return sound !== undefined && this.state.sounds[index] !== undefined
+                            }).map((sound, index) => {
+                                if (sound !== undefined && this.state.sounds[index] !== undefined) {
+                                    return <Sound name={this.state.index + ":" + index} key={this.state.index + ":" + index} index={index} fileAddHandler={this.props.fileAddHandler} filepath={this.state.sounds[index]} />
+                                }
+
+
                             }
 
                             )
@@ -49,11 +56,17 @@ class SoundGroup extends Component {
     }
 
     addSound() {
+
         this.setState({ isOpen: true })
 
         let sounds = this.state.sounds;
-        sounds[sounds.length] = '';
-        //TODO: filter undefineds out
+
+        if (sounds.length !== undefined) {
+            sounds[sounds.length] = '';
+        } else {
+            sounds[Object.keys(sounds).length] = '';
+        }
+
         this.setState({ sounds: sounds })
 
     }
