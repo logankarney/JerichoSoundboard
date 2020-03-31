@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button, Icon } from "@blueprintjs/core";
 const { ipcRenderer } = window.require('electron');
 
 class Sound extends Component {
@@ -16,8 +17,8 @@ class Sound extends Component {
 
     render() {
         return (<div>
-            <button onClick={() => this.addSound()}>Add</button>
-            <button onClick={() => this.playSound()}>Play</button>
+            <Button onClick={() => this.addSound()} minimal={true} ><Icon icon="edit" iconSize={18} /></Button>
+            <Button onClick={() => this.playSound()} minimal={true} ><Icon icon="play" iconSize={18} /></Button>
         </div>);
     }
 
