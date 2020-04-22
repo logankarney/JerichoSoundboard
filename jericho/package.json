@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "main": "public/electron.js",
+  "author": {
+    "name": "Logan Karney",
+    "email": "karneyl@mail.gvsu.edu"
+  },
+  "homepage": "./",
   "dependencies": {
     "@blueprintjs/core": "^3.24.0",
     "electron-is-dev": "^1.1.0",

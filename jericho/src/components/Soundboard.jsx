@@ -30,6 +30,7 @@ class SoundBoard extends Component {
 
         ipcRenderer.on('binding', (event, binding) => {
             console.log(binding)
+            this.playSoundGroup(binding);
         });
     }
 
@@ -60,7 +61,19 @@ class SoundBoard extends Component {
     }
 
     addSoundGroup() {
-        this.setState({ soundGroups: [...this.state.soundGroups, { name: "Group " + this.state.soundGroups.length }] });
+        this.setState({ soundGroups: [...this.state.soundGroups, { name: "Group " + this.state.soundGroups.length, binding: this.state.soundGroups.length.toString() }] });
+    }
+
+    playSoundGroup(binding) {
+        for (let i = 0; i < this.state.soundGroups.length; i++) {
+            let group = this.state.soundGroups[i];
+            if (group.binding.localeCompare(binding) === 0) {
+                let sounds = group.sounds;
+                let random = Math.round(Math.random() * Object.keys(sounds).length);
+                this.playSound(sounds[random]);
+            }
+
+        }
     }
 
     import() {
@@ -105,6 +118,13 @@ class SoundBoard extends Component {
             this.setState({ [ev.target.name]: Number(ev.target.value) });
         } else {
             this.setState({ [ev.target.name]: ev.target.value });
+        }
+    }
+
+    playSound(filepath) {
+        if (filepath !== undefined && filepath.localeCompare('') !== 0) {
+            const player = new Audio(filepath);
+            player.play().catch(e => console.error("audio play failed with: " + e));
         }
     }
 

@@ -35,7 +35,7 @@ function createWindow() {
   if (isDev) {
     // Open the DevTools.
     BrowserWindow.addDevToolsExtension(
-      "C:Users\\lpkar\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.5.0_0"
+      "C:Users\\lpkar\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.6.0_0"
     );
     mainWindow.webContents.openDevTools();
   }
