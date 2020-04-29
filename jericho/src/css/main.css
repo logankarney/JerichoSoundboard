@@ -49,3 +49,11 @@ html {
 *:focus {
   outline: none;
 }
+
+.bp3-button.bp3-minimal:hover {
+  background: none;
+}
+.bp3-button.bp3-minimal:active,
+.bp3-button.bp3-minimal.bp3-active {
+  background: none;
+}
