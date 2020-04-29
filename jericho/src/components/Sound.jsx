@@ -21,7 +21,7 @@ class Sound extends Component {
         return (<div className="soundHeader">
             <Button onClick={() => this.addSound()} minimal={true} className="editButton"><Icon icon="edit" iconSize={16} /></Button>
             <Label className="soundName">{this.state.displayName}</Label>
-            <Button onClick={() => this.playSound()} minimal={true} className="playButton"><Icon icon="play" iconSize={18} intent={this.state.filepath !== '' ? "success" : "none"} /></Button>
+            <Button onClick={() => this.playSound()} minimal={true} className="playButton"><Icon icon="play" iconSize={18} intent={this.state.filepath !== undefined && this.state.filepath !== '' ? "success" : "none"} /></Button>
         </div>);
     }
 

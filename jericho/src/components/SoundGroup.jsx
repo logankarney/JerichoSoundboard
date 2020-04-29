@@ -6,14 +6,13 @@ class SoundGroup extends Component {
     constructor(props) {
         super(props);
 
-        let propSounds = this.props.sounds;
-
         this.state = {
             name: props.name,
             index: this.props.index,
             binding: this.props.binding,
             isOpen: true,
-            sounds: (propSounds !== undefined) ? propSounds : [],
+            sounds: this.props.sounds,
+            soundAddHandler: this.props.soundAddHandler,
             fileAddHandler: this.props.fileAddHandler
         }
 
@@ -31,21 +30,15 @@ class SoundGroup extends Component {
                     <Button onClick={() => this.addSound()} minimal={true}><Icon icon="plus" iconSize={22} /></Button>
                 </div>
                 <div>
-                    <Collapse isOpen={this.state.isOpen} keepChildrenMounted={true}> <div>
-                    </div>
+                    <Collapse isOpen={this.state.isOpen} keepChildrenMounted={true}>
+
                         {
-                            Object.keys(this.state.sounds).filter((sound, index) => {
-                                return sound !== undefined && this.state.sounds[index] !== undefined
-                            }).map((sound, index) => {
-                                if (sound !== undefined && this.state.sounds[index] !== undefined) {
-                                    return <Sound name={this.state.index + ":" + index} key={this.state.index + ":" + index} index={index} fileAddHandler={this.props.fileAddHandler} filepath={this.state.sounds[index]} />
-                                }
+                            this.state.sounds.map((sound, index) => {
+                                return <Sound name={sound.name} key={this.state.index + ":" + index} index={index} fileAddHandler={this.props.fileAddHandler} filepath={sound.filepath} />
+                            })
+                        }
 
-
-                            }
-
-                            )
-                        }</Collapse>
+                    </Collapse>
 
                 </div>
 
@@ -56,19 +49,8 @@ class SoundGroup extends Component {
     }
 
     addSound() {
-
         this.setState({ isOpen: true })
-
-        let sounds = this.state.sounds;
-
-        if (sounds.length !== undefined) {
-            sounds[sounds.length] = '';
-        } else {
-            sounds[Object.keys(sounds).length] = '';
-        }
-
-        this.setState({ sounds: sounds })
-
+        this.state.soundAddHandler(this.state.index);
     }
 
     toggleOpen() {

@@ -25,12 +25,12 @@ class SoundBoard extends Component {
 
         this.state = {
             name: "Test Name",
-            soundGroups: (propSoundGroups !== undefined) ? propSoundGroups : [],
+            soundGroups: [],
         }
 
         ipcRenderer.on('binding', (event, binding) => {
             console.log(binding)
-            this.playSoundGroup(binding);
+            // this.playSoundGroup(binding);
         });
     }
 
@@ -43,7 +43,7 @@ class SoundBoard extends Component {
 
                 <div id="soundGroups">
                     {
-                        this.state.soundGroups.map((group, index) => <SoundGroup key={index} index={index.toString()} name={group.name} binding={group.binding} sounds={group.sounds} fileAddHandler={this.addFileHander.bind(this)} />)
+                        this.state.soundGroups.map((group, index) => <SoundGroup key={index} index={index.toString()} name={group.name} binding={group.binding} sounds={group.sounds} soundAddHandler={this.addSoundHandler.bind(this)} fileAddHandler={this.addFileHander.bind(this)} />)
                     }
                 </div>
                 <div>
@@ -61,19 +61,11 @@ class SoundBoard extends Component {
     }
 
     addSoundGroup() {
-        this.setState({ soundGroups: [...this.state.soundGroups, { name: "Group " + this.state.soundGroups.length, binding: this.state.soundGroups.length.toString() }] });
-    }
-
-    playSoundGroup(binding) {
-        for (let i = 0; i < this.state.soundGroups.length; i++) {
-            let group = this.state.soundGroups[i];
-            if (group.binding.localeCompare(binding) === 0) {
-                let sounds = group.sounds;
-                let random = Math.round(Math.random() * Object.keys(sounds).length);
-                this.playSound(sounds[random]);
-            }
-
-        }
+        let soundGroupLength = this.state.soundGroups.length;
+        let newGroup = { name: "Group " + soundGroupLength, binding: soundGroupLength.toString(), sounds: [] }
+        const soundGroups = this.state.soundGroups.slice();
+        soundGroups.push({ ...newGroup });
+        this.setState({ soundGroups: soundGroups });
     }
 
     import() {
@@ -94,6 +86,16 @@ class SoundBoard extends Component {
         ipcRenderer.send('export', storedData);
     }
 
+    //Adds a sound to the specified group
+    addSoundHandler(groupIndex) {
+        const soundGroups = this.state.soundGroups.slice();
+        let group = soundGroups[groupIndex];
+        //this.state.index + ":" + index;
+        let soundsLength = group.sounds.length;
+        group.sounds.push({ name: groupIndex + ":" + soundsLength, filepath: "", displayName: "Sound " + soundsLength })
+        this.setState({ soundGroups: soundGroups });
+    }
+
     addFileHander(fileInput) {
 
         let groupFile = fileInput.id.split(':');
@@ -102,29 +104,17 @@ class SoundBoard extends Component {
         let filepath = fileInput.filepath;
 
         //Gets the list of Sounds from the appropriate group
-        let groups = this.state.soundGroups;
-        let group = groups[groupId];
-        let groupSounds = { ...group.sounds }
-
-        //Set the filepath of the new sound
-        groupSounds[fileId] = filepath
-        group.sounds = groupSounds
-        groups[groupId] = group;
-        this.setState({ soundGroups: groups });
+        let soundGroups = this.state.soundGroups.slice();
+        soundGroups[groupId].sounds[fileId].filepath = filepath;
+        this.setState({ soundGroups: soundGroups });
     }
+
 
     updateFormData(ev) {
         if (ev.target.type === "number") {
             this.setState({ [ev.target.name]: Number(ev.target.value) });
         } else {
             this.setState({ [ev.target.name]: ev.target.value });
-        }
-    }
-
-    playSound(filepath) {
-        if (filepath !== undefined && filepath.localeCompare('') !== 0) {
-            const player = new Audio(filepath);
-            player.play().catch(e => console.error("audio play failed with: " + e));
         }
     }
 
