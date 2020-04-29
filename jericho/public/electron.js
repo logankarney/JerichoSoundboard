@@ -94,14 +94,11 @@ function userKeyDown(event) {
   if (event.rawcode === recordKeyCode && !recording) {
     recording = true;
   } else if (recording && event.rawcode !== recordKeyCode) {
-    //adds offset for numpad keys
-    let key =
-      event.rawcode < 96 || event.rawcode > 105
-        ? event.rawcode
-        : event.rawcode - 48;
-
-    //if the record key is being pressed down and the current key event is not the the record key,
-    inputs += String.fromCharCode(key);
+    //Only allow numpad keys
+    if (96 <= event.rawcode && event.rawcode <= 105) {
+      //adds offset for numpad keys
+      inputs += String.fromCharCode(event.rawcode - 48);
+    }
   }
 }
 
