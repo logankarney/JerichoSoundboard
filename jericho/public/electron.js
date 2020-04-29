@@ -19,7 +19,7 @@ function createWindow() {
     width: 900,
     height: 680,
 
-    //node integration being true allows react to import electron moduiles
+    //node integration being true allows react to import electron modules
     //web security being false allows electron to access local files
     webPreferences: {
       nodeIntegration: true,
