@@ -20,7 +20,7 @@ function createWindow() {
     height: 680,
 
     //node integration being true allows react to import electron modules
-    //web security being false allows electron to access local files
+    //web security being false allows electron to access local files while in dev mode
     webPreferences: {
       nodeIntegration: true,
       webSecurity: !isDev
