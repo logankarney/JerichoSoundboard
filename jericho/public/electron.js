@@ -23,7 +23,7 @@ function createWindow() {
     //web security being false allows electron to access local files
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false
+      webSecurity: !isDev
     }
   });
 
