@@ -20,9 +20,6 @@ class SoundBoard extends Component {
     constructor(props) {
         super(props);
 
-        let propSoundGroups = this.props.soundGroups;
-
-
         this.state = {
             name: "Test Name",
             soundGroups: [],

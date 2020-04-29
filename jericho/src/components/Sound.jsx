@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Icon, Input, Label } from "@blueprintjs/core";
+import { Button, Icon, Label } from "@blueprintjs/core";
 const { ipcRenderer } = window.require('electron');
 
 class Sound extends Component {
