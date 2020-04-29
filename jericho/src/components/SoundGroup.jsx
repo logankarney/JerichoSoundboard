@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Sound from './Sound.jsx';
-import { Button, Collapse, Icon, Label } from "@blueprintjs/core";
+import { Button, Collapse, Icon, Label, InputGroup } from "@blueprintjs/core";
 
 class SoundGroup extends Component {
     constructor(props) {
@@ -11,6 +11,7 @@ class SoundGroup extends Component {
             index: this.props.index,
             binding: this.props.binding,
             isOpen: true,
+            editingName: false,
             sounds: this.props.sounds,
             soundAddHandler: this.props.soundAddHandler,
             fileAddHandler: this.props.fileAddHandler
@@ -26,7 +27,13 @@ class SoundGroup extends Component {
                     <Button onClick={() => this.toggleOpen()} minimal={true} className="chevron">
                         <Icon icon={this.state.isOpen && this.state.sounds.length > 0 ? "chevron-down" : "chevron-right"} iconSize={22} />
                     </Button>
-                    <Label className="soundGroupName">{this.state.name}</Label>
+                    {
+                        !this.state.editingName && <Label className="soundGroupName" onContextMenu={() => this.toggleEdit()}>{this.state.name}</Label>
+                    }
+                    {
+                        this.state.editingName && <InputGroup name="name" onContextMenu={() => this.toggleEdit()} value={this.state.name} onChange={(e) => { this.updateFormData(e) }} />
+                    }
+
                     <Button onClick={() => this.addSound()} minimal={true}><Icon icon="plus" iconSize={22} /></Button>
                 </div>
                 <div>
@@ -55,6 +62,10 @@ class SoundGroup extends Component {
 
     toggleOpen() {
         this.setState({ isOpen: !this.state.isOpen })
+    }
+
+    toggleEdit() {
+        this.setState({ editingName: !this.state.editingName })
     }
 
     updateFormData(ev) {
