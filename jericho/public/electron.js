@@ -73,7 +73,10 @@ ipcMain.on("import", async event => {
       event.sender.send("load", file);
     })
     .catch(err => {
-      console.error(err);
+      //ERR_INVALID_ARG_TYPE is thrown when the user doesn't select a file
+      if (!err.code.localeCompare("ERR_INVALID_ARG_TYPE") === 0) {
+        console.error(err);
+      }
     });
 });
 
