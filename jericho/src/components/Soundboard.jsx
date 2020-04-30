@@ -57,9 +57,9 @@ class SoundBoard extends Component {
                                         <td><Button onClick={() => this.addSound(i)}></Button></td>
                                         <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(i)} /></td>
                                     </tr>,
-                                    <tr key={i + "-sounds"} onClick={() => this.toggleSoundsDropdown(i)}>
+                                    <tr key={i + "-sounds"}>
                                         <td colSpan={4}>
-                                            <div>
+                                            <div onClick={() => this.toggleSoundsDropdown(i)}>
                                                 {group.sounds.length} Sounds
                                                 </div>
                                             <div>
