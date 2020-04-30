@@ -40,7 +40,7 @@ class SoundBoard extends Component {
 
         return (
             <div>
-                <Overlay isOpen={this.state.editMode} autoFocus={true} enforceFocus={true} canOutsideClickClose={false} canEscapeKeyClose={true} onClose={() => this.toggleOverlay()}>
+                <Overlay isOpen={this.state.editMode} autoFocus={true} enforceFocus={true} canOutsideClickClose={false} canEscapeKeyClose={true} onClose={() => this.toggleOverlay()} transitionDuration={0}>
                     <div id="overlay-children">
                         <table id="data-table" className="bp3-html-table">
                             <thead>
