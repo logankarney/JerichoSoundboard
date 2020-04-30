@@ -44,7 +44,7 @@ class SoundBoard extends Component {
                     }
                 </div>
                 <div>
-                    <Button className="bp3-button bp3-icon-download bp3-intent-secondary" onClick={() => this.import()} >Load</Button>
+                    <Button className="bp3-button bp3-icon-download bp3-intent-secondary" onClick={() => this.import()} >Import</Button>
                     <Button className="bp3-button bp3-icon-floppy-disk bp3-intent-secondary" onClick={() => this.export()} >Save</Button>
                 </div>
 
