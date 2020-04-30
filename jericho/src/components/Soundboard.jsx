@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SoundGroup from './SoundGroup.jsx'
-import { Button, Overlay, InputGroup } from "@blueprintjs/core";
+import { Button, Overlay, InputGroup, Collapse } from "@blueprintjs/core";
 import "normalize.css/normalize.css"
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
@@ -54,11 +54,47 @@ class SoundBoard extends Component {
 
                                 {
                                     this.state.tableSoundGroups.map((group, index) =>
-                                        <tr key={index}>
+
+                                        ([<tr key={index}>
                                             <td><InputGroup value={group.name} name="name" onChange={(e) => this.editTableCell(e, index)} /></td>
                                             <td><InputGroup value={group.binding} name="binding" onChange={(e) => this.editTableCell(e, index)} /></td>
                                             <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(index)} /></td>
-                                        </tr>
+                                        </tr>,
+                                        <tr key={index + "-sounds"} >
+                                            <td colSpan={3}>
+                                                <div>
+                                                    {group.sounds.length} Sounds
+                                                </div>
+                                                <div>
+                                                    <Collapse isOpen={true}>
+                                                        <table className={"table-sounds"}>
+                                                            <tbody>
+                                                                {
+                                                                    group.sounds.map((sound, index) => {
+                                                                        return <tr key={index}>
+                                                                            <td>
+                                                                                <InputGroup value={sound.displayName} />
+                                                                            </td>
+                                                                            <td>
+                                                                                soundFileNameTruncated
+                                                                            </td>
+                                                                            <td>
+                                                                                <Button>Edit File</Button>
+                                                                            </td>
+                                                                            <td>
+                                                                                <Button>Delete</Button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    })
+                                                                }
+                                                            </tbody>
+                                                        </table>
+
+                                                    </Collapse>
+                                                </div>
+
+                                            </td>
+                                        </tr>])
                                     )
                                 }
                             </tbody>

@@ -66,9 +66,13 @@ html {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 30px);
+  transform: translate(-60%, 30px);
 }
 
 .bp3-overlay-backdrop {
   position: relative;
+}
+
+.table-sounds {
+  width: 100%;
 }
