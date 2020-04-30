@@ -34,7 +34,7 @@ class SoundBoard extends Component {
 
         return (
             <div>
-                <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
+                <p id="app-header">Jericho</p>
 
                 <div id="overlay-children">
                     <table id="data-table" className="bp3-html-table">
@@ -57,13 +57,13 @@ class SoundBoard extends Component {
                                         <td><Button onClick={() => this.addSound(i)}></Button></td>
                                         <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(i)} /></td>
                                     </tr>,
-                                    <tr key={i + "-sounds"} >
+                                    <tr key={i + "-sounds"} onClick={() => this.toggleSoundsDropdown(i)}>
                                         <td colSpan={4}>
                                             <div>
                                                 {group.sounds.length} Sounds
                                                 </div>
                                             <div>
-                                                <Collapse isOpen={true}>
+                                                <Collapse isOpen={group.open}>
                                                     <table className={"table-sounds"}>
                                                         <tbody>
                                                             {
@@ -103,7 +103,7 @@ class SoundBoard extends Component {
                         <Button className="bp3-button bp3-icon-floppy-disk bp3-intent-success" onClick={() => this.closeOverlay(true)}>Save</Button>
                     </div>
                 </div>
-
+                <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
                 <div>
                     <Button className="bp3-button bp3-icon-download bp3-intent-secondary" onClick={() => this.import()} >Import</Button>
                     <Button className="bp3-button bp3-icon-upload bp3-intent-secondary" onClick={() => this.export()} >Export</Button>
@@ -119,7 +119,7 @@ class SoundBoard extends Component {
      */
     addSoundGroup() {
         let tableSoundGroupsLength = this.state.tableSoundGroups.length;
-        let newGroup = { name: "Group " + tableSoundGroupsLength, binding: tableSoundGroupsLength.toString(), sounds: [] }
+        let newGroup = { name: "Group " + tableSoundGroupsLength, binding: tableSoundGroupsLength.toString(), sounds: [], open: false }
         const soundGroups = this.state.tableSoundGroups.slice();
         soundGroups.push({ ...newGroup });
         this.setState({ tableSoundGroups: soundGroups });
@@ -207,6 +207,13 @@ class SoundBoard extends Component {
         let group = tableSoundGroups[groupIndex];
         let soundsLength = group.sounds.length;
         group.sounds.push({ name: groupIndex + ":" + soundsLength, filepath: "", displayName: "Sound " + soundsLength })
+        group.open = true;
+        this.setState({ tableSoundGroups: tableSoundGroups });
+    }
+
+    toggleSoundsDropdown(i) {
+        const tableSoundGroups = this.state.tableSoundGroups.slice();
+        tableSoundGroups[i].open = !tableSoundGroups[i].open;
         this.setState({ tableSoundGroups: tableSoundGroups });
     }
 

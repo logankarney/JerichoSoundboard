@@ -69,3 +69,15 @@ html {
 .table-sounds {
   width: 100%;
 }
+
+@font-face {
+  font-family: "ethnocentric";
+  src: local("ethnocentric"),
+    url(../fonts/ethnocentric.italic.ttf) format("truetype");
+}
+
+#app-header {
+  font-family: "ethnocentric";
+  font-size: 50px;
+  color: white;
+}
