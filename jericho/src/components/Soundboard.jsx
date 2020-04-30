@@ -93,16 +93,19 @@ class SoundBoard extends Component {
     editTableCell(e, index) {
         let groupId = index;
         let type = e.target.name;
-
-
-
         let tableSoundGroups = this.state.tableSoundGroups.slice();
         tableSoundGroups[groupId][type] = e.target.value;
         this.setState({ tableSoundGroups: tableSoundGroups });
     }
 
     deleteSoundGroup(index) {
-        console.log(index);
+
+        const tableSoundGroups = this.state.tableSoundGroups.slice().filter((group, i) => {
+            return i !== index;
+        });
+
+
+        this.setState({ tableSoundGroups: tableSoundGroups });
     }
 
     addSoundGroup() {
