@@ -156,12 +156,8 @@ class SoundBoard extends Component {
 
     //Adds a sound to the specified group
     addSoundHandler(groupIndex) {
-        console.log('here');
         const soundGroups = this.state.soundGroups.slice();
-        console.log(soundGroups);
         let group = soundGroups[groupIndex];
-        console.log(groupIndex);
-        //this.state.index + ":" + index;
         let soundsLength = group.sounds.length;
         group.sounds.push({ name: groupIndex + ":" + soundsLength, filepath: "", displayName: "Sound " + soundsLength })
         this.setState({ soundGroups: soundGroups });
