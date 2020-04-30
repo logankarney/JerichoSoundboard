@@ -61,3 +61,14 @@ html {
 #data-table {
   background: white;
 }
+
+#overlay-children {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 20%);
+}
+
+.bp3-overlay-backdrop {
+  position: relative;
+}

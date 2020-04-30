@@ -41,32 +41,35 @@ class SoundBoard extends Component {
         return (
             <div>
                 <Overlay isOpen={this.state.editMode} autoFocus={true} enforceFocus={true} canOutsideClickClose={false} canEscapeKeyClose={true} onClose={() => this.toggleOverlay()}>
-                    <table id="data-table" className="bp3-html-table">
-                        <thead>
-                            <tr>
-                                <th>Group Name</th>
-                                <th>Binding</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div id="overlay-children">
+                        <table id="data-table" className="bp3-html-table">
+                            <thead>
+                                <tr>
+                                    <th>Group Name</th>
+                                    <th>Binding</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                            {
-                                this.state.tableSoundGroups.map((group, index) =>
-                                    <tr key={index}>
-                                        <td><InputGroup value={group.name} name="name" onChange={(e) => this.editTableCell(e, index)} /></td>
-                                        <td><InputGroup value={group.binding} name="binding" onChange={(e) => this.editTableCell(e, index)} /></td>
-                                        <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(index)} /></td>
-                                    </tr>
-                                )
-                            }
-                        </tbody>
-                    </table>
+                                {
+                                    this.state.tableSoundGroups.map((group, index) =>
+                                        <tr key={index}>
+                                            <td><InputGroup value={group.name} name="name" onChange={(e) => this.editTableCell(e, index)} /></td>
+                                            <td><InputGroup value={group.binding} name="binding" onChange={(e) => this.editTableCell(e, index)} /></td>
+                                            <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(index)} /></td>
+                                        </tr>
+                                    )
+                                }
+                            </tbody>
+                        </table>
 
-                    <div>
-                        <Button className="bp3-button bp3-intent-warning" onClick={() => this.closeOverlay(false)}>Cancel</Button>
-                        <Button className="bp3-button bp3-intent-success" onClick={() => this.closeOverlay(true)}>Done</Button>
+                        <div>
+                            <Button className="bp3-button bp3-intent-warning" onClick={() => this.closeOverlay(false)}>Cancel</Button>
+                            <Button className="bp3-button bp3-intent-success" onClick={() => this.closeOverlay(true)}>Done</Button>
+                        </div>
                     </div>
+
 
                 </Overlay>
                 <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
