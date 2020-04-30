@@ -114,8 +114,10 @@ class SoundBoard extends Component {
     }
 
     openOverlay() {
-        //Deep copies soundGroups so if any changes are reverted, the original is untouched on overlay close
-        this.setState({ tableSoundGroups: JSON.parse(JSON.stringify(this.state.soundGroups)) }, this.toggleOverlay());
+        if (this.state.soundGroups.length > 0) {
+            //Deep copies soundGroups so if any changes are reverted, the original is untouched on overlay close
+            this.setState({ tableSoundGroups: JSON.parse(JSON.stringify(this.state.soundGroups)) }, this.toggleOverlay());
+        }
     }
 
     closeOverlay(save) {
