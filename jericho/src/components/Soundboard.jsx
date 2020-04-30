@@ -74,7 +74,7 @@ class SoundBoard extends Component {
 
                 <div id="soundGroups">
                     {
-                        this.state.soundGroups.map((group, index) => <SoundGroup key={index} index={index.toString()} name={group.name} binding={group.binding} sounds={group.sounds} soundAddHandler={this.addSoundHandler.bind(this)} fileAddHandler={this.addFileHander.bind(this)} />)
+                        this.state.soundGroups.map((group, index) => <SoundGroup key={index} index={index.toString()} name={group.name} sounds={group.sounds} soundAddHandler={this.addSoundHandler.bind(this)} fileAddHandler={this.addFileHander.bind(this)} />)
                     }
                 </div>
                 <div>
@@ -119,7 +119,7 @@ class SoundBoard extends Component {
         //TODO: add handlers to editing tableSoundGroups to save data
 
         if (save) {
-            this.setState({ soundGroups: this.state.tableSoundGroups });
+            this.setState({ soundGroups: JSON.parse(JSON.stringify(this.state.tableSoundGroups)) });
         }
 
         this.toggleOverlay();
@@ -151,8 +151,11 @@ class SoundBoard extends Component {
 
     //Adds a sound to the specified group
     addSoundHandler(groupIndex) {
+        console.log('here');
         const soundGroups = this.state.soundGroups.slice();
+        console.log(soundGroups);
         let group = soundGroups[groupIndex];
+        console.log(groupIndex);
         //this.state.index + ":" + index;
         let soundsLength = group.sounds.length;
         group.sounds.push({ name: groupIndex + ":" + soundsLength, filepath: "", displayName: "Sound " + soundsLength })
