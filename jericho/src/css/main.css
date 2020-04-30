@@ -57,3 +57,7 @@ html {
 .bp3-button.bp3-minimal.bp3-active {
   background: none;
 }
+
+#data-table {
+  background: white;
+}

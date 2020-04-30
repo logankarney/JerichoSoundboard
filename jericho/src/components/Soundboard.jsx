@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SoundGroup from './SoundGroup.jsx'
-import { Button } from "@blueprintjs/core";
+import { Button, Overlay, InputGroup } from "@blueprintjs/core";
 import "normalize.css/normalize.css"
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
@@ -17,26 +17,60 @@ const cleanState = () => ({
 class SoundBoard extends Component {
 
 
+
+
     constructor(props) {
         super(props);
 
         this.state = {
             name: "Test Name",
             soundGroups: [],
+            tableSoundGroups: [],
+            editMode: false
         }
 
         ipcRenderer.on('binding', (event, binding) => {
             this.playSoundGroup(binding);
         });
+
+
     }
 
     render() {
 
-        this.soundboard = (
+        return (
             <div>
+                <Overlay isOpen={this.state.editMode} autoFocus={true} enforceFocus={true} canOutsideClickClose={false} canEscapeKeyClose={true} onClose={() => this.toggleOverlay()}>
+                    <table id="data-table" className="bp3-html-table">
+                        <thead>
+                            <tr>
+                                <th>Group Name</th>
+                                <th>Binding</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
+                            {
+                                this.state.tableSoundGroups.map((group, index) =>
+                                    <tr key={index}>
+                                        <td><InputGroup value={group.name} name="name" onChange={(e) => this.editTableCell(e, index)} /></td>
+                                        <td><InputGroup value={group.binding} name="binding" onChange={(e) => this.editTableCell(e, index)} /></td>
+                                        <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(index)} /></td>
+                                    </tr>
+                                )
+                            }
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <Button className="bp3-button bp3-intent-warning" onClick={() => this.closeOverlay(false)}>Cancel</Button>
+                        <Button className="bp3-button bp3-intent-success" onClick={() => this.closeOverlay(true)}>Done</Button>
+                    </div>
+
+                </Overlay>
                 <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
-                <Button id="settingsButton" className="bp3-button bp3-icon-settings"></Button>
+                <Button id="settingsButton" className="bp3-button bp3-icon-settings" onClick={() => this.openOverlay()} />
 
                 <div id="soundGroups">
                     {
@@ -51,10 +85,21 @@ class SoundBoard extends Component {
             </div>
         );
 
+    }
+
+    editTableCell(e, index) {
+        let groupId = index;
+        let type = e.target.name;
 
 
 
-        return this.soundboard;
+        let tableSoundGroups = this.state.tableSoundGroups.slice();
+        tableSoundGroups[groupId][type] = e.target.value;
+        this.setState({ tableSoundGroups: tableSoundGroups });
+    }
+
+    deleteSoundGroup(index) {
+        console.log(index);
     }
 
     addSoundGroup() {
@@ -65,8 +110,28 @@ class SoundBoard extends Component {
         this.setState({ soundGroups: soundGroups });
     }
 
+    openOverlay() {
+        //Deep copies soundGroups so if any changes are reverted, the original is untouched on overlay close
+        this.setState({ tableSoundGroups: JSON.parse(JSON.stringify(this.state.soundGroups)) }, this.toggleOverlay());
+    }
+
+    closeOverlay(save) {
+        //TODO: add handlers to editing tableSoundGroups to save data
+
+        if (save) {
+            this.setState({ soundGroups: this.state.tableSoundGroups });
+        }
+
+        this.toggleOverlay();
+    }
+
+    toggleOverlay() {
+        this.setState({ editMode: !this.state.editMode });
+    }
+
     import() {
 
+        //TODO: Check if a file was chosen before wiping data
         this.setState(cleanState);
 
         ipcRenderer.send('import');
@@ -109,7 +174,8 @@ class SoundBoard extends Component {
 
     playSoundGroup(binding) {
 
-        let group = this.state.soundGroups[binding];
+        //let group = this.state.soundGroups[binding];
+        let group = this.state.soundGroups.find(soundGroup => soundGroup.binding.localeCompare(binding) === 0);
 
         if (group !== undefined) {
             let sounds = group.sounds;
@@ -124,7 +190,12 @@ class SoundBoard extends Component {
 
 
             let random = Math.round(Math.random() * (Object.keys(playableSounds).length - 1));
-            this.playSound(playableSounds[random].filepath);
+
+            //If the soundboard has any valid sounds
+            if (playableSounds[random] !== undefined) {
+                this.playSound(playableSounds[random].filepath);
+            }
+
         }
 
     }
