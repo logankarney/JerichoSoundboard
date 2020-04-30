@@ -34,7 +34,7 @@ class SoundGroup extends Component {
                         this.state.editingName && <InputGroup name="name" onContextMenu={() => this.toggleEdit()} value={this.state.name} onChange={(e) => { this.updateFormData(e) }} />
                     }
 
-                    <Button onClick={() => this.addSound()} minimal={true}><Icon icon="plus" iconSize={22} /></Button>
+                    <Button className="addSoundButton" onClick={() => this.addSound()} minimal={true}><Icon icon="plus" iconSize={22} /></Button>
                 </div>
                 <div>
                     <Collapse isOpen={this.state.isOpen} keepChildrenMounted={true}>
