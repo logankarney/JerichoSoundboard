@@ -142,6 +142,8 @@ async function openSound() {
 }
 
 async function saveFile(args) {
+  //TODO: check if file exists in current directory
+
   let selection = await dialog.showSaveDialog(mainWindow, {
     filters: [
       {
