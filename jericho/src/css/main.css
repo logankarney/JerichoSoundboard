@@ -62,13 +62,6 @@ html {
   background: white;
 }
 
-#overlay-children {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-60%, 30px);
-}
-
 .bp3-overlay-backdrop {
   position: relative;
 }

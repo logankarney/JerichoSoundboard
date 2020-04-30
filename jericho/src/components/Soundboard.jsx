@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import SoundGroup from './SoundGroup.jsx'
-import { Button, Overlay, InputGroup, Collapse } from "@blueprintjs/core";
+import { Button, InputGroup, Collapse } from "@blueprintjs/core";
 import "normalize.css/normalize.css"
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
@@ -9,24 +8,19 @@ const { ipcRenderer } = window.require('electron');
 
 
 const cleanState = () => ({
-    name: "Group Name",
-    soundGroups: []
+    soundGroups: [],
+    tableSoundGroups: []
 });
 
 
 class SoundBoard extends Component {
 
-
-
-
     constructor(props) {
         super(props);
 
         this.state = {
-            name: "Test Name",
             soundGroups: [],
-            tableSoundGroups: [],
-            editMode: false
+            tableSoundGroups: []
         }
 
         ipcRenderer.on('binding', (event, binding) => {
@@ -40,85 +34,81 @@ class SoundBoard extends Component {
 
         return (
             <div>
-                <Overlay isOpen={this.state.editMode} autoFocus={true} enforceFocus={true} canOutsideClickClose={false} canEscapeKeyClose={true} onClose={() => this.toggleOverlay()} transitionDuration={0}>
-                    <div id="overlay-children">
-                        <table id="data-table" className="bp3-html-table">
-                            <thead>
-                                <tr>
-                                    <th>Group Name</th>
-                                    <th>Binding</th>
-                                    <th>Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                {
-                                    this.state.tableSoundGroups.map((group, index) =>
-
-                                        ([<tr key={index}>
-                                            <td><InputGroup value={group.name} name="name" onChange={(e) => this.editTableCell(e, index)} /></td>
-                                            <td><InputGroup value={group.binding} name="binding" onChange={(e) => this.editTableCell(e, index)} /></td>
-                                            <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(index)} /></td>
-                                        </tr>,
-                                        <tr key={index + "-sounds"} >
-                                            <td colSpan={3}>
-                                                <div>
-                                                    {group.sounds.length} Sounds
-                                                </div>
-                                                <div>
-                                                    <Collapse isOpen={true}>
-                                                        <table className={"table-sounds"}>
-                                                            <tbody>
-                                                                {
-                                                                    group.sounds.map((sound, index) => {
-                                                                        return <tr key={index}>
-                                                                            <td>
-                                                                                <InputGroup value={sound.displayName} />
-                                                                            </td>
-                                                                            <td>
-                                                                                soundFileNameTruncated
-                                                                            </td>
-                                                                            <td>
-                                                                                <Button>Edit File</Button>
-                                                                            </td>
-                                                                            <td>
-                                                                                <Button>Delete</Button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    })
-                                                                }
-                                                            </tbody>
-                                                        </table>
-
-                                                    </Collapse>
-                                                </div>
-
-                                            </td>
-                                        </tr>])
-                                    )
-                                }
-                            </tbody>
-                        </table>
-
-                        <div>
-                            <Button className="bp3-button bp3-intent-warning" onClick={() => this.closeOverlay(false)}>Cancel</Button>
-                            <Button className="bp3-button bp3-intent-success" onClick={() => this.closeOverlay(true)}>Done</Button>
-                        </div>
-                    </div>
-
-
-                </Overlay>
                 <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
                 <Button id="settingsButton" className="bp3-button bp3-icon-settings" onClick={() => this.openOverlay()} />
 
-                <div id="soundGroups">
-                    {
-                        this.state.soundGroups.map((group, index) => <SoundGroup key={index} index={index.toString()} name={group.name} sounds={group.sounds} soundAddHandler={this.addSoundHandler.bind(this)} fileAddHandler={this.addFileHander.bind(this)} />)
-                    }
+
+                <div id="overlay-children">
+                    <table id="data-table" className="bp3-html-table">
+                        <thead>
+                            <tr>
+                                <th>Group Name</th>
+                                <th>Binding</th>
+                                <th>Add Sound</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {
+                                this.state.tableSoundGroups.map((group, i) =>
+
+                                    ([<tr key={i}>
+                                        <td><InputGroup value={group.name} name="name" onChange={(e) => this.editGroupTableCell(e, i)} /></td>
+                                        <td><InputGroup value={group.binding} name="binding" onChange={(e) => this.editGroupTableCell(e, i)} /></td>
+                                        <td><Button onClick={() => this.addSound(i)}></Button></td>
+                                        <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(i)} /></td>
+                                    </tr>,
+                                    <tr key={i + "-sounds"} >
+                                        <td colSpan={4}>
+                                            <div>
+                                                {group.sounds.length} Sounds
+                                                </div>
+                                            <div>
+                                                <Collapse isOpen={true}>
+                                                    <table className={"table-sounds"}>
+                                                        <tbody>
+                                                            {
+                                                                group.sounds.map((sound, j) => {
+                                                                    return <tr key={j}>
+                                                                        <td>
+                                                                            <InputGroup value={sound.displayName} onChange={(e) => this.editSoundTableCell(e, i, j)} />
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <Button onClick={() => this.editSoundFile(i + ":" + j)}>Edit File</Button>
+                                                                        </td>
+                                                                        <td>
+                                                                            <Button onClick={() => this.playSoundCell(i, j)}>Play</Button>
+                                                                        </td>
+                                                                        <td>
+                                                                            <Button onClick={() => this.deleteSoundTableCell(i, j)}>Delete</Button>
+                                                                        </td>
+                                                                    </tr>
+                                                                })
+                                                            }
+                                                        </tbody>
+                                                    </table>
+
+                                                </Collapse>
+                                            </div>
+
+                                        </td>
+                                    </tr>])
+                                )
+                            }
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <Button className="bp3-button bp3-intent-warning" onClick={() => this.closeOverlay(false)}>Cancel</Button>
+                        <Button className="bp3-button bp3-icon-floppy-disk bp3-intent-success" onClick={() => this.closeOverlay(true)}>Save</Button>
+                    </div>
                 </div>
+
                 <div>
                     <Button className="bp3-button bp3-icon-download bp3-intent-secondary" onClick={() => this.import()} >Import</Button>
-                    <Button className="bp3-button bp3-icon-floppy-disk bp3-intent-secondary" onClick={() => this.export()} >Save</Button>
+                    <Button className="bp3-button bp3-icon-upload bp3-intent-secondary" onClick={() => this.export()} >Export</Button>
                 </div>
 
             </div>
@@ -126,37 +116,21 @@ class SoundBoard extends Component {
 
     }
 
-    editTableCell(e, index) {
-        let groupId = index;
-        let type = e.target.name;
-        let tableSoundGroups = this.state.tableSoundGroups.slice();
-        tableSoundGroups[groupId][type] = e.target.value;
-        this.setState({ tableSoundGroups: tableSoundGroups });
-    }
-
-    deleteSoundGroup(index) {
-
-        const tableSoundGroups = this.state.tableSoundGroups.slice().filter((group, i) => {
-            return i !== index;
-        });
-
-
-        this.setState({ tableSoundGroups: tableSoundGroups });
-    }
-
+    /***
+     * Soundboard Methods
+     */
     addSoundGroup() {
-        let soundGroupLength = this.state.soundGroups.length;
-        let newGroup = { name: "Group " + soundGroupLength, binding: soundGroupLength.toString(), sounds: [] }
-        const soundGroups = this.state.soundGroups.slice();
+        let tableSoundGroupsLength = this.state.tableSoundGroups.length;
+        let newGroup = { name: "Group " + tableSoundGroupsLength, binding: tableSoundGroupsLength.toString(), sounds: [] }
+        const soundGroups = this.state.tableSoundGroups.slice();
         soundGroups.push({ ...newGroup });
-        this.setState({ soundGroups: soundGroups });
+        this.setState({ tableSoundGroups: soundGroups });
     }
 
     openOverlay() {
-        if (this.state.soundGroups.length > 0) {
-            //Deep copies soundGroups so if any changes are reverted, the original is untouched on overlay close
-            this.setState({ tableSoundGroups: JSON.parse(JSON.stringify(this.state.soundGroups)) }, this.toggleOverlay());
-        }
+        //Deep copies soundGroups so if any changes are reverted, the original is untouched on overlay close
+        this.setState({ tableSoundGroups: JSON.parse(JSON.stringify(this.state.soundGroups)) });
+
     }
 
     closeOverlay(save) {
@@ -164,25 +138,21 @@ class SoundBoard extends Component {
 
         if (save) {
             this.setState({ soundGroups: JSON.parse(JSON.stringify(this.state.tableSoundGroups)) });
+        } else {
+            this.setState({ tableSoundGroups: JSON.parse(JSON.stringify(this.state.soundGroups)) });
         }
 
-        this.toggleOverlay();
-    }
 
-    toggleOverlay() {
-        this.setState({ editMode: !this.state.editMode });
     }
 
     import() {
 
-        //TODO: Check if a file was chosen before wiping data
         this.setState(cleanState);
 
         ipcRenderer.send('import');
 
         ipcRenderer.on('load', (event, file) => {
-            this.setState({ name: file.name })
-            this.setState({ soundGroups: file.soundGroups })
+            this.setState({ tableSoundGroups: file.soundGroups })
         });
     }
 
@@ -192,33 +162,10 @@ class SoundBoard extends Component {
         ipcRenderer.send('export', storedData);
     }
 
-
-    //Adds a sound to the specified group
-    addSoundHandler(groupIndex) {
-        const soundGroups = this.state.soundGroups.slice();
-        let group = soundGroups[groupIndex];
-        let soundsLength = group.sounds.length;
-        group.sounds.push({ name: groupIndex + ":" + soundsLength, filepath: "", displayName: "Sound " + soundsLength })
-        this.setState({ soundGroups: soundGroups });
-    }
-
-    addFileHander(fileInput) {
-
-        let groupFile = fileInput.id.split(':');
-        let groupId = groupFile[0];
-        let fileId = groupFile[1];
-        let filepath = fileInput.filepath;
-
-        //Gets the list of Sounds from the appropriate group
-        let soundGroups = this.state.soundGroups.slice();
-        soundGroups[groupId].sounds[fileId].filepath = filepath;
-        this.setState({ soundGroups: soundGroups });
-    }
-
     playSoundGroup(binding) {
 
         //let group = this.state.soundGroups[binding];
-        let group = this.state.soundGroups.find(soundGroup => soundGroup.binding.localeCompare(binding) === 0);
+        let group = this.state.tableSoundGroups.find(soundGroup => soundGroup.binding.localeCompare(binding) === 0);
 
         if (group !== undefined) {
             let sounds = group.sounds;
@@ -243,27 +190,97 @@ class SoundBoard extends Component {
 
     }
 
+    /***
+     * SoundGroup Methods
+     */
+    editGroupTableCell(e, i) {
+        let type = e.target.name;
+        let tableSoundGroups = this.state.tableSoundGroups.slice();
+        tableSoundGroups[i][type] = e.target.value;
+        this.setState({ tableSoundGroups: tableSoundGroups });
+    }
+
+    deleteSoundGroup(index) {
+
+        const tableSoundGroups = this.state.tableSoundGroups.slice().filter((group, i) => {
+            return i !== index;
+        });
+
+
+        this.setState({ tableSoundGroups: tableSoundGroups });
+    }
+
+    addSound(groupIndex) {
+        const tableSoundGroups = this.state.tableSoundGroups.slice();
+        let group = tableSoundGroups[groupIndex];
+        let soundsLength = group.sounds.length;
+        group.sounds.push({ name: groupIndex + ":" + soundsLength, filepath: "", displayName: "Sound " + soundsLength })
+        this.setState({ tableSoundGroups: tableSoundGroups });
+    }
+
+    /***
+     * Sound Methods
+     */
+    editSoundTableCell(e, i, j) {
+        let tableSoundGroups = this.state.tableSoundGroups.slice();
+        tableSoundGroups[i].sounds[j].displayName = e.target.value;
+        this.setState({ tableSoundGroups: tableSoundGroups });
+    }
+
+    deleteSoundTableCell(i, j) {
+
+        const tableSoundGroups = this.state.tableSoundGroups.slice();
+        let soundGroup = tableSoundGroups[i];
+
+        soundGroup.sounds = soundGroup.sounds.filter((sound, index) => {
+            return index !== j;
+        });
+
+
+        this.setState({ tableSoundGroups: tableSoundGroups });
+
+    }
+
+
+    editSoundFile(id) {
+        //tells electron to open a file dialog for audio files
+
+        let args = {
+            id: id
+        }
+
+        ipcRenderer.send('add', args);
+
+        //sets the component's filepath
+        ipcRenderer.on('filepath' + id, (event, filepath) => {
+            this.editFilepathHander({ id: id, filepath: filepath });
+        });
+    }
+
+    editFilepathHander(fileInput) {
+
+        let groupFile = fileInput.id.split(':');
+        let groupId = groupFile[0];
+        let fileId = groupFile[1];
+        let filepath = fileInput.filepath;
+
+        //Gets the list of Sounds from the appropriate group
+        let soundGroups = this.state.tableSoundGroups.slice();
+        soundGroups[groupId].sounds[fileId].filepath = filepath;
+        this.setState({ tableSoundGroups: soundGroups });
+    }
+
+    playSoundCell(i, j) {
+        this.playSound(this.state.tableSoundGroups[i].sounds[j].filepath);
+    }
+
+    /***
+     * Misc Methods
+     */
     playSound(filepath) {
         if (filepath !== undefined && filepath.localeCompare('') !== 0) {
             const player = new Audio(filepath);
             player.play().catch(e => console.error("audio play failed with: " + e));
-        }
-    }
-
-    editGroupNameHandler(groupIndex, newName) {
-        const soundGroups = this.state.soundGroups.slice();
-        let group = soundGroups[groupIndex];
-        group.name = newName;
-
-        this.setState({ soundGroups: soundGroups });
-    }
-
-
-    updateFormData(ev) {
-        if (ev.target.type === "number") {
-            this.setState({ [ev.target.name]: Number(ev.target.value) });
-        } else {
-            this.setState({ [ev.target.name]: ev.target.value });
         }
     }
 
