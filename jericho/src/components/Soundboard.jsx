@@ -35,8 +35,6 @@ class SoundBoard extends Component {
         return (
             <div>
                 <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
-                <Button id="settingsButton" className="bp3-button bp3-icon-settings" onClick={() => this.openOverlay()} />
-
 
                 <div id="overlay-children">
                     <table id="data-table" className="bp3-html-table">
@@ -125,12 +123,6 @@ class SoundBoard extends Component {
         const soundGroups = this.state.tableSoundGroups.slice();
         soundGroups.push({ ...newGroup });
         this.setState({ tableSoundGroups: soundGroups });
-    }
-
-    openOverlay() {
-        //Deep copies soundGroups so if any changes are reverted, the original is untouched on overlay close
-        this.setState({ tableSoundGroups: JSON.parse(JSON.stringify(this.state.soundGroups)) });
-
     }
 
     closeOverlay(save) {
