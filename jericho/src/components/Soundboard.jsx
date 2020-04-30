@@ -36,6 +36,7 @@ class SoundBoard extends Component {
             <div>
 
                 <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
+                <Button id="settingsButton" className="bp3-button bp3-icon-settings"></Button>
 
                 <div id="soundGroups">
                     {
@@ -43,8 +44,8 @@ class SoundBoard extends Component {
                     }
                 </div>
                 <div>
-                    <Button className="bp3-button bp3-icon-download bp3-intent-secondary" onClick={() => this.import()} >Import</Button>
-                    <Button className="bp3-button bp3-icon-upload bp3-intent-secondary" onClick={() => this.export()} >Export</Button>
+                    <Button className="bp3-button bp3-icon-download bp3-intent-secondary" onClick={() => this.import()} >Load</Button>
+                    <Button className="bp3-button bp3-icon-floppy-disk bp3-intent-secondary" onClick={() => this.export()} >Save</Button>
                 </div>
 
             </div>
@@ -133,6 +134,14 @@ class SoundBoard extends Component {
             const player = new Audio(filepath);
             player.play().catch(e => console.error("audio play failed with: " + e));
         }
+    }
+
+    editGroupNameHandler(groupIndex, newName) {
+        const soundGroups = this.state.soundGroups.slice();
+        let group = soundGroups[groupIndex];
+        group.name = newName;
+
+        this.setState({ soundGroups: soundGroups });
     }
 
 
