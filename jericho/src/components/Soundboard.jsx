@@ -36,78 +36,84 @@ class SoundBoard extends Component {
             <div>
                 <p id="app-header">Jericho</p>
 
-                <div id="overlay-children">
-                    <table id="data-table" className="bp3-html-table">
-                        <thead>
-                            <tr>
-                                <th>Group Name</th>
-                                <th>Binding</th>
-                                <th>Add Sound</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            {
-                                this.state.tableSoundGroups.map((group, i) =>
-
-                                    ([<tr key={i}>
-                                        <td><InputGroup value={group.name} name="name" onChange={(e) => this.editGroupTableCell(e, i)} /></td>
-                                        <td><InputGroup value={group.binding} name="binding" onChange={(e) => this.editGroupTableCell(e, i)} /></td>
-                                        <td><Button className="bp3-button bp3-icon-add" onClick={() => this.addSound(i)}></Button></td>
-                                        <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(i)} /></td>
-                                    </tr>,
-                                    <tr key={i + "-sounds"}>
-                                        <td colSpan={4}>
-                                            <div onClick={() => this.toggleSoundsDropdown(i)}>
-                                                {group.sounds.length} Sounds
-                                                </div>
-                                            <div>
-                                                <Collapse isOpen={group.open}>
-                                                    <table className={"table-sounds"}>
-                                                        <tbody>
-                                                            {
-                                                                group.sounds.map((sound, j) => {
-                                                                    return <tr key={j}>
-                                                                        <td>
-                                                                            <InputGroup value={sound.displayName} onChange={(e) => this.editSoundTableCell(e, i, j)} />
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <Button onClick={() => this.editSoundFile(i + ":" + j)}>Edit File</Button>
-                                                                        </td>
-                                                                        <td>
-                                                                            <Button onClick={() => this.playSoundCell(i, j)}>Play</Button>
-                                                                        </td>
-                                                                        <td>
-                                                                            <Button onClick={() => this.deleteSoundTableCell(i, j)}>Delete</Button>
-                                                                        </td>
-                                                                    </tr>
-                                                                })
-                                                            }
-                                                        </tbody>
-                                                    </table>
-
-                                                </Collapse>
-                                            </div>
-
-                                        </td>
-                                    </tr>])
-                                )
-                            }
-                        </tbody>
-                    </table>
-
+                <div id="content" className="bp3-elevation-4">
                     <div>
-                        <Button className="bp3-button bp3-intent-warning" onClick={() => this.closeOverlay(false)}>Cancel</Button>
-                        <Button className="bp3-button bp3-icon-floppy-disk bp3-intent-success" onClick={() => this.closeOverlay(true)}>Save</Button>
+                        <table id="data-table" className="bp3-html-table">
+                            <thead>
+                                <tr className="no-select">
+                                    <th>Group Name</th>
+                                    <th>Binding</th>
+                                    <th>Add Sound</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {
+                                    this.state.tableSoundGroups.map((group, i) =>
+
+                                        ([<tr key={i}>
+                                            <td><InputGroup value={group.name} name="name" onChange={(e) => this.editGroupTableCell(e, i)} /></td>
+                                            <td><InputGroup value={group.binding} name="binding" onChange={(e) => this.editGroupTableCell(e, i)} /></td>
+                                            <td><Button className="bp3-button bp3-icon-add" onClick={() => this.addSound(i)}></Button></td>
+                                            <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(i)} /></td>
+                                        </tr>,
+                                        <tr key={i + "-sounds"}>
+                                            <td colSpan={4}>
+                                                <div onClick={() => this.toggleSoundsDropdown(i)} className="no-select">
+                                                    {group.sounds.length} Sounds
+                                                </div>
+                                                <div>
+                                                    <Collapse isOpen={group.open}>
+                                                        <table className={"table-sounds"}>
+                                                            <tbody>
+                                                                {
+                                                                    group.sounds.map((sound, j) => {
+                                                                        return <tr key={j}>
+                                                                            <td>
+                                                                                <InputGroup value={sound.displayName} onChange={(e) => this.editSoundTableCell(e, i, j)} />
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <Button onClick={() => this.editSoundFile(i + ":" + j)}>Edit File</Button>
+                                                                            </td>
+                                                                            <td>
+                                                                                <Button onClick={() => this.playSoundCell(i, j)}>Play</Button>
+                                                                            </td>
+                                                                            <td>
+                                                                                <Button onClick={() => this.deleteSoundTableCell(i, j)}>Delete</Button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    })
+                                                                }
+                                                            </tbody>
+                                                        </table>
+
+                                                    </Collapse>
+                                                </div>
+
+                                            </td>
+                                        </tr>])
+                                    )
+                                }
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <Button className="bp3-button bp3-intent-warning" onClick={() => this.closeOverlay(false)}>Cancel</Button>
+                            <Button className="bp3-button bp3-icon-floppy-disk bp3-intent-success" onClick={() => this.closeOverlay(true)}>Save</Button>
+                        </div>
+                    </div>
+
+                    <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
+
+
+                    <div >
+                        <Button className="bp3-button bp3-icon-download bp3-intent-secondary" onClick={() => this.import()} >Import</Button>
+                        <Button className="bp3-button bp3-icon-upload bp3-intent-secondary" onClick={() => this.export()} >Export</Button>
                     </div>
                 </div>
-                <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
-                <div>
-                    <Button className="bp3-button bp3-icon-download bp3-intent-secondary" onClick={() => this.import()} >Import</Button>
-                    <Button className="bp3-button bp3-icon-upload bp3-intent-secondary" onClick={() => this.export()} >Export</Button>
-                </div>
+
 
             </div>
         );
