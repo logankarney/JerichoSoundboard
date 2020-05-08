@@ -36,7 +36,7 @@ class SoundBoard extends Component {
             <div>
                 <p id="app-header">Jericho</p>
 
-                <div id="content" className="bp3-elevation-4">
+                <div id="content">
                     <div>
                         <table id="data-table" className="bp3-html-table">
                             <thead>
