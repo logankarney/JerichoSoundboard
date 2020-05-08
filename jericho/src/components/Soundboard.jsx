@@ -64,8 +64,8 @@ class SoundBoard extends Component {
                                                     {group.sounds.length} Sound{group.sounds.length !== 1 ? "s" : ""}
                                                 </div>
                                                 <div>
-                                                    <Collapse isOpen={group.open}>
-                                                        <table className={"table-sounds"}>
+                                                    <Collapse isOpen={group.open} className="sound-dropdown">
+                                                        <table className="table-sounds bp3-elevation-3">
                                                             <tbody>
                                                                 {
                                                                     group.sounds.map((sound, j) => {

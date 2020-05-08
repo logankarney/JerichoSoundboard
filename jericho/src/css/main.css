@@ -36,43 +36,9 @@ html {
   color: #e8e8eb;
 }
 
-.soundGroupHeader {
-  margin-top: -0.5rem;
-}
-
-.soundGroupHeader,
-.soundHeader {
-  display: flex;
-}
-
-.soundGroupName {
-  color: #e8e8eb;
-  padding-top: 0.9rem;
-  padding-left: 1rem;
-  padding-right: 5rem;
-}
-
 .chevron:hover {
   outline: none;
   box-shadow: none;
-}
-
-.soundName {
-  color: #e8e8eb;
-  padding-left: 1rem;
-  width: 150px;
-}
-
-.editButton {
-  margin-left: 1.5rem;
-
-  margin-top: -0.5rem;
-  height: fit-content;
-}
-
-.playButton {
-  margin-top: -0.4rem;
-  height: fit-content;
 }
 
 *:focus {
@@ -100,10 +66,15 @@ table.bp3-html-table td {
 
 .table-sounds {
   width: 100%;
+  margin-top: 10px;
+  background-color: #36393d;
 }
 
 .no-select {
   user-select: none;
+}
+
+.sound-dropdown {
 }
 
 @font-face {
