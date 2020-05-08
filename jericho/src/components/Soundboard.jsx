@@ -33,14 +33,14 @@ class SoundBoard extends Component {
     render() {
 
         return (
-            <div>
-                <p id="app-header">Jericho</p>
+            <div id="grid">
+                <p id="grid-top">Jericho</p>
 
-                <div id="content">
+                <div id="grid-center">
                     <div>
-                        <table id="data-table" className="bp3-html-table">
+                        <table className="bp3-html-table">
                             <thead>
-                                <tr className="no-select">
+                                <tr className="group-info no-select">
                                     <th>Group Name</th>
                                     <th>Binding</th>
                                     <th>Add Sound</th>
@@ -61,7 +61,7 @@ class SoundBoard extends Component {
                                         <tr key={i + "-sounds"}>
                                             <td colSpan={4}>
                                                 <div onClick={() => this.toggleSoundsDropdown(i)} className="no-select">
-                                                    {group.sounds.length} Sound{group.sounds.length != 1 ? "s" : ""}
+                                                    {group.sounds.length} Sound{group.sounds.length !== 1 ? "s" : ""}
                                                 </div>
                                                 <div>
                                                     <Collapse isOpen={group.open}>
@@ -114,6 +114,9 @@ class SoundBoard extends Component {
                     </div>
                 </div>
 
+                <div id="grid-left">
+
+                </div>
 
             </div>
         );
