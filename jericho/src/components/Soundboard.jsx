@@ -61,7 +61,7 @@ class SoundBoard extends Component {
                                         <tr key={i + "-sounds"}>
                                             <td colSpan={4}>
                                                 <div onClick={() => this.toggleSoundsDropdown(i)} className="no-select">
-                                                    {group.sounds.length} Sounds
+                                                    {group.sounds.length} Sound{group.sounds.length != 1 ? "s" : ""}
                                                 </div>
                                                 <div>
                                                     <Collapse isOpen={group.open}>
