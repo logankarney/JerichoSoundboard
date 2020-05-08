@@ -150,7 +150,12 @@ class SoundBoard extends Component {
 
     export() {
         //TODO: use toast here to send message on success/failure
-        let storedData = JSON.stringify(this.state)
+
+        let exports = {
+            soundGroups: this.state.tableSoundGroups
+        }
+
+        let storedData = JSON.stringify(exports)
         ipcRenderer.send('export', storedData);
     }
 
