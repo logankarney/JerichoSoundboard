@@ -54,7 +54,7 @@ class SoundBoard extends Component {
                                     ([<tr key={i}>
                                         <td><InputGroup value={group.name} name="name" onChange={(e) => this.editGroupTableCell(e, i)} /></td>
                                         <td><InputGroup value={group.binding} name="binding" onChange={(e) => this.editGroupTableCell(e, i)} /></td>
-                                        <td><Button onClick={() => this.addSound(i)}></Button></td>
+                                        <td><Button className="bp3-button bp3-icon-add" onClick={() => this.addSound(i)}></Button></td>
                                         <td><Button className="bp3-button bp3-icon-add bp3-intent-danger bp3-icon-trash" onClick={() => this.deleteSoundGroup(i)} /></td>
                                     </tr>,
                                     <tr key={i + "-sounds"}>
