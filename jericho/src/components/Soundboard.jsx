@@ -75,13 +75,14 @@ class SoundBoard extends Component {
                                                                             </td>
 
                                                                             <td>
-                                                                                <Button onClick={() => this.editSoundFile(i + ":" + j)}>Edit File</Button>
+                                                                                <Button className={`bp3-icon-${this.state.tableSoundGroups[i].sounds[j].filepath.localeCompare('') !== 0 ? "selection" : "circle"}`}
+                                                                                    onClick={() => this.editSoundFile(i + ":" + j)} />
                                                                             </td>
                                                                             <td>
-                                                                                <Button onClick={() => this.playSoundCell(i, j)}>Play</Button>
+                                                                                <Button className="bp3-icon-play" onClick={() => this.playSoundCell(i, j)} />
                                                                             </td>
                                                                             <td>
-                                                                                <Button onClick={() => this.deleteSoundTableCell(i, j)}>Delete</Button>
+                                                                                <Button className="bp3-icon-trash" onClick={() => this.deleteSoundTableCell(i, j)} />
                                                                             </td>
                                                                         </tr>
                                                                     })
