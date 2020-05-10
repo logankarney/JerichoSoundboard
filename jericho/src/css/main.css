@@ -4,15 +4,16 @@ html {
 
 #grid {
   display: grid;
-  grid-template-columns: 50px 550px;
+  grid-template-columns: 75px 550px;
 }
 
 #grid-top {
   font-family: "ethnocentric";
-  font-size: 50px;
+  font-size: 20px;
   color: white;
   margin-left: 10px;
-  margin-bottom: 0;
+  margin-top: 4px;
+  margin-bottom: 5px;
   grid-row-start: 1;
   grid-row-end: 2;
   grid-column-start: 1;
@@ -25,10 +26,25 @@ html {
   grid-column-start: 2;
   grid-column-end: 3;
 
+  border-top-left-radius: 12px;
+
   background-color: #2c2f33;
 }
 
 #grid-left {
+  padding-left: 12.5px;
+  padding-right: 12.5px;
+}
+
+#grid-left button {
+  height: 50px;
+  width: 50px;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+hr {
+  color: #c2c2c2;
 }
 
 #addGroupButton {

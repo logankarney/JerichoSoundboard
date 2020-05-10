@@ -99,23 +99,20 @@ class SoundBoard extends Component {
                                 }
                             </tbody>
                         </table>
-
-                        <div>
-                            <Button className="bp3-button bp3-intent-warning" onClick={() => this.closeOverlay(false)}>Cancel</Button>
-                            <Button className="bp3-button bp3-icon-floppy-disk bp3-intent-success" onClick={() => this.closeOverlay(true)}>Save</Button>
-                        </div>
                     </div>
 
-                    <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} >Add Group</Button>;
-
-
-                    <div >
-                        <Button className="bp3-button bp3-icon-download bp3-intent-secondary" onClick={() => this.import()} >Import</Button>
-                        <Button className="bp3-button bp3-icon-upload bp3-intent-secondary" onClick={() => this.export()} >Export</Button>
-                    </div>
                 </div>
 
                 <div id="grid-left">
+                    <Button id="addGroupButton" className="bp3-button bp3-icon-add bp3-intent-primary" onClick={() => this.addSoundGroup()} />
+                    <hr />
+                    <Button className="bp3-button bp3-icon-undo bp3-intent-warning" onClick={() => this.closeOverlay(false)} />
+                    <Button className="bp3-button bp3-icon-floppy-disk bp3-intent-success" onClick={() => this.closeOverlay(true)} />
+                    <hr />
+                    <Button className="bp3-button bp3-icon-download bp3-intent-secondary" onClick={() => this.import()} />
+                    <Button className="bp3-button bp3-icon-upload bp3-intent-secondary" onClick={() => this.export()} />
+                    <hr />
+                    <Button className="bp3-button bp3-icon-cog" />
 
                 </div>
 
