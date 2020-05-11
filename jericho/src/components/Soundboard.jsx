@@ -38,9 +38,9 @@ class SoundBoard extends Component {
 
                 <div id="grid-center">
                     <div>
-                        <table id="group-table-head" className="bp3-html-table">
-                            <thead>
-                                <tr className="group-info no-select">
+                        <table id="group-table" className="bp3-html-table">
+                            <thead id="group-table-head">
+                                <tr className="no-select">
                                     <th>Group Name</th>
                                     <th>Binding</th>
                                     <th>Add Sound</th>
