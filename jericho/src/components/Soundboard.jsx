@@ -38,7 +38,7 @@ class SoundBoard extends Component {
 
                 <div id="grid-center">
                     <div>
-                        <table className="bp3-html-table">
+                        <table id="group-table-head" className="bp3-html-table">
                             <thead>
                                 <tr className="group-info no-select">
                                     <th>Group Name</th>
@@ -47,7 +47,7 @@ class SoundBoard extends Component {
                                     <th>Delete</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="group-table-body">
 
                                 {
                                     this.state.tableSoundGroups.map((group, i) =>

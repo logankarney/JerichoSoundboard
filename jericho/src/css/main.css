@@ -1,5 +1,6 @@
 html {
   background-color: #1e2124;
+  overflow: hidden;
 }
 
 #grid {
@@ -26,9 +27,22 @@ html {
   grid-column-start: 2;
   grid-column-end: 3;
 
-  border-top-left-radius: 12px;
+  height: 550px;
+
+  border-top-left-radius: 9px;
 
   background-color: #2c2f33;
+}
+
+#group-table-head,
+#group-table-body {
+  display: block;
+}
+
+#group-table-body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 510px;
 }
 
 #grid-left {
@@ -43,8 +57,9 @@ html {
   box-shadow: none;
 }
 
-hr {
-  color: #c2c2c2;
+#grid-left hr {
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 #addGroupButton {
@@ -91,6 +106,10 @@ table.bp3-html-table td {
 }
 
 .sound-dropdown {
+}
+
+hr {
+  color: #c2c2c2;
 }
 
 @font-face {
