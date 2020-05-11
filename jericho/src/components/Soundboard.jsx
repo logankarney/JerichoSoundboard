@@ -126,7 +126,7 @@ class SoundBoard extends Component {
      */
     addSoundGroup() {
         let tableSoundGroupsLength = this.state.tableSoundGroups.length;
-        let newGroup = { name: "Group " + tableSoundGroupsLength, binding: tableSoundGroupsLength.toString(), sounds: [], open: false }
+        let newGroup = { name: "Group " + tableSoundGroupsLength, binding: "", sounds: [], open: false }
         const soundGroups = this.state.tableSoundGroups.slice();
         soundGroups.push({ ...newGroup });
         this.setState({ tableSoundGroups: soundGroups });
@@ -169,6 +169,11 @@ class SoundBoard extends Component {
     playSoundGroup(binding) {
 
         //let group = this.state.soundGroups[binding];
+
+        if (binding.localeCompare("") === 0) {
+            return;
+        }
+
         let group = this.state.tableSoundGroups.find(soundGroup => soundGroup.binding.localeCompare(binding) === 0);
 
         if (group !== undefined) {
