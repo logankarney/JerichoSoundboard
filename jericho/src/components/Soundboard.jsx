@@ -237,7 +237,7 @@ class SoundBoard extends Component {
         const tableSoundGroups = this.state.tableSoundGroups.slice();
         let group = tableSoundGroups[groupIndex];
         let soundsLength = group.sounds.length;
-        group.sounds.push({ name: groupIndex + ":" + soundsLength, filepath: "", displayName: "Sound " + soundsLength })
+        group.sounds.push({ name: groupIndex + ":" + soundsLength, filepath: "", displayName: "" })
         group.open = true;
         this.setState({ tableSoundGroups: tableSoundGroups });
     }
@@ -282,8 +282,8 @@ class SoundBoard extends Component {
         ipcRenderer.send('add', args);
 
         //sets the component's filepath
-        ipcRenderer.on('filepath' + id, (event, filepath) => {
-            this.editFilepathHander({ id: id, filepath: filepath });
+        ipcRenderer.on('filepath' + id, (event, file) => {
+            this.editFilepathHander({ id: id, filepath: file.filepath, filename: file.filename });
         });
     }
 
@@ -293,10 +293,13 @@ class SoundBoard extends Component {
         let groupId = groupFile[0];
         let fileId = groupFile[1];
         let filepath = fileInput.filepath;
+        let filename = fileInput.filename;
 
         //Gets the list of Sounds from the appropriate group
         let soundGroups = this.state.tableSoundGroups.slice();
         soundGroups[groupId].sounds[fileId].filepath = filepath;
+        soundGroups[groupId].sounds[fileId].displayName = filename;
+
         this.setState({ tableSoundGroups: soundGroups });
     }
 

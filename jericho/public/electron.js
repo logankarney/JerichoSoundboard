@@ -71,7 +71,6 @@ ipcMain.on("export", async (event, args) => {
 ipcMain.on("import", async event => {
   openFile()
     .then(file => {
-      console.log(file);
       event.sender.send("load", file);
     })
     .catch(err => {
@@ -111,8 +110,6 @@ function userKeyUp(event) {
   if (event.rawcode === recordKeyCode) {
     recording = false;
 
-    console.log(inputs);
-
     //sends the input to the soundboard
     mainWindow.webContents.send("binding", inputs);
     //wipes the gathered inputs
@@ -138,7 +135,16 @@ async function openSound() {
 
   //returns the filepath
   if (files) {
-    return files.filePaths[0];
+    let filepath = files.filePaths[0];
+
+    var filename = filepath.replace(/^.*[\\\/]/, "");
+
+    let file = {
+      filename: filename,
+      filepath: filepath
+    };
+
+    return file;
   } else {
     //if there are no files
     return;
