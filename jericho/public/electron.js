@@ -8,6 +8,8 @@ let mainWindow;
 
 //TODO: let users choose this in a settings file
 let recordKeyCode = 164;
+let stopKeyCode = 96;
+
 let recording = false;
 
 let inputs = "";
@@ -99,6 +101,8 @@ function userKeyDown(event) {
       //adds offset for numpad keys
       inputs += String.fromCharCode(event.rawcode - 48);
     }
+  } else if (!recording && event.rawcode === stopKeyCode) {
+    mainWindow.webContents.send("stop");
   }
 }
 

@@ -9,7 +9,8 @@ const { ipcRenderer } = window.require('electron');
 
 const cleanState = () => ({
     soundGroups: [],
-    tableSoundGroups: []
+    tableSoundGroups: [],
+    activeSounds: []
 });
 
 
@@ -20,14 +21,17 @@ class SoundBoard extends Component {
 
         this.state = {
             soundGroups: [],
-            tableSoundGroups: []
+            tableSoundGroups: [],
+            activeSounds: []
         }
 
         ipcRenderer.on('binding', (event, binding) => {
             this.playSoundGroup(binding);
         });
 
-
+        ipcRenderer.on('stop', event => {
+            this.stopSounds();
+        })
     }
 
     render() {
@@ -199,6 +203,16 @@ class SoundBoard extends Component {
 
     }
 
+    stopSounds() {
+        let activeSounds = this.state.activeSounds.slice();
+        while (activeSounds.length !== 0) {
+            let player = activeSounds.pop();
+            player.pause();
+            player.currentTime = 0;
+        }
+        this.setState({ activeSounds: activeSounds });
+    }
+
     /***
      * SoundGroup Methods
      */
@@ -293,10 +307,23 @@ class SoundBoard extends Component {
     /***
      * Misc Methods
      */
-    playSound(filepath) {
+    async playSound(filepath) {
         if (filepath !== undefined && filepath.localeCompare('') !== 0) {
             const player = new Audio(filepath);
+
             player.play().catch(e => console.error("audio play failed with: " + e));
+
+            player['onended'] = () => {
+                let activeSounds = this.state.activeSounds.slice().filter((sound, i) => {
+                    return sound !== player;
+                });
+
+                this.setState({ activeSounds: activeSounds });
+            };
+
+            let activeSounds = this.state.activeSounds.slice();
+            activeSounds.push(player);
+            this.setState({ activeSounds: activeSounds });
         }
     }
 
