@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, InputGroup, Collapse } from "@blueprintjs/core";
+import { Button, InputGroup, Collapse, Icon } from "@blueprintjs/core";
 import "normalize.css/normalize.css"
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
@@ -65,7 +65,7 @@ class SoundBoard extends Component {
                                         <tr key={i + "-sounds"}>
                                             <td colSpan={4}>
                                                 <div onClick={() => this.toggleSoundsDropdown(i)} className="no-select">
-                                                    {group.sounds.length} Sound{group.sounds.length !== 1 ? "s" : ""}
+                                                    <Icon icon={`chevron-${group.open ? "down" : "right"}`} iconSize={20}></Icon>
                                                 </div>
                                                 <div>
                                                     <Collapse isOpen={group.open} className="sound-dropdown">
@@ -244,7 +244,14 @@ class SoundBoard extends Component {
 
     toggleSoundsDropdown(i) {
         const tableSoundGroups = this.state.tableSoundGroups.slice();
+
         tableSoundGroups[i].open = !tableSoundGroups[i].open;
+
+        if (tableSoundGroups[i].open && tableSoundGroups[i].sounds.length <= 0) {
+            tableSoundGroups[i].open = false;
+        }
+
+
         this.setState({ tableSoundGroups: tableSoundGroups });
     }
 
