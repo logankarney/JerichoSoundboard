@@ -8,6 +8,8 @@ let mainWindow;
 
 //TODO: let users choose this in a settings file
 let recordKeyCode = 164;
+let stopKeyCode = 96;
+
 let recording = false;
 
 let inputs = "";
@@ -19,11 +21,11 @@ function createWindow() {
     width: 900,
     height: 680,
 
-    //node integration being true allows react to import electron moduiles
-    //web security being false allows electron to access local files
+    //node integration being true allows react to import electron modules
+    //web security being false allows electron to access local files while in dev mode
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false
+      webSecurity: !isDev
     }
   });
 
@@ -69,11 +71,13 @@ ipcMain.on("export", async (event, args) => {
 ipcMain.on("import", async event => {
   openFile()
     .then(file => {
-      console.log(file);
       event.sender.send("load", file);
     })
     .catch(err => {
-      console.error(err);
+      //ERR_INVALID_ARG_TYPE is thrown when the user doesn't select a file
+      if (!err.code.localeCompare("ERR_INVALID_ARG_TYPE") === 0) {
+        console.error(err);
+      }
     });
 });
 
@@ -91,14 +95,13 @@ function userKeyDown(event) {
   if (event.rawcode === recordKeyCode && !recording) {
     recording = true;
   } else if (recording && event.rawcode !== recordKeyCode) {
-    //adds offset for numpad keys
-    let key =
-      event.rawcode < 96 || event.rawcode > 105
-        ? event.rawcode
-        : event.rawcode - 48;
-
-    //if the record key is being pressed down and the current key event is not the the record key,
-    inputs += String.fromCharCode(key);
+    //Only allow numpad keys
+    if (96 <= event.rawcode && event.rawcode <= 105) {
+      //adds offset for numpad keys
+      inputs += String.fromCharCode(event.rawcode - 48);
+    }
+  } else if (!recording && event.rawcode === stopKeyCode) {
+    mainWindow.webContents.send("stop");
   }
 }
 
@@ -106,8 +109,6 @@ function userKeyUp(event) {
   //when the record key is not being held down
   if (event.rawcode === recordKeyCode) {
     recording = false;
-
-    console.log(inputs);
 
     //sends the input to the soundboard
     mainWindow.webContents.send("binding", inputs);
@@ -134,7 +135,16 @@ async function openSound() {
 
   //returns the filepath
   if (files) {
-    return files.filePaths[0];
+    let filepath = files.filePaths[0];
+
+    var filename = filepath.replace(/^.*[\\\/]/, "");
+
+    let file = {
+      filename: filename,
+      filepath: filepath
+    };
+
+    return file;
   } else {
     //if there are no files
     return;
@@ -142,6 +152,8 @@ async function openSound() {
 }
 
 async function saveFile(args) {
+  //TODO: check if file exists in current directory
+
   let selection = await dialog.showSaveDialog(mainWindow, {
     filters: [
       {
