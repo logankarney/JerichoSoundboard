@@ -22,7 +22,8 @@ class SoundBoard extends Component {
         this.state = {
             soundGroups: [],
             tableSoundGroups: [],
-            activeSounds: []
+            activeSounds: [],
+            outputDeviceId: undefined
         }
 
         ipcRenderer.on('binding', (event, binding) => {
@@ -34,11 +35,12 @@ class SoundBoard extends Component {
         })
 
 
-        navigator.mediaDevices
-            .enumerateDevices()
-            .then(gotDevices)
-            .catch((e) => { console.err(e) });
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            console.log("enumerateDevices() not supported.");
+            return;
+        }
 
+        this.startup()
     }
 
     render() {
@@ -328,6 +330,11 @@ class SoundBoard extends Component {
         if (filepath !== undefined && filepath.localeCompare('') !== 0) {
             const player = new Audio(filepath);
 
+
+            if (this.state.outputDeviceId != '') {
+                await player.setSinkId(this.state.outputDeviceId)
+            }
+
             player.play().catch(e => console.error("audio play failed with: " + e));
 
             player['onended'] = () => {
@@ -344,22 +351,26 @@ class SoundBoard extends Component {
         }
     }
 
-    gotDevices(deviceInfos) {
-        // Handles being called several times to update labels. Preserve values.
-        const values = selectors.map(select => select.value);
-        selectors.forEach(select => {
-            while (select.firstChild) {
-                select.removeChild(select.firstChild);
-            }
-        });
-        for (let i = 0; i !== deviceInfos.length; ++i) {
-            const deviceInfo = deviceInfos[i];
+    startup() {
 
-            console.log(deviceInfo);
-        }
+        // List cameras and microphones.
+
+        navigator.mediaDevices.enumerateDevices()
+            .then((devices) => {
+                devices.forEach(function (device, index) {
+                    console.log(device)
+                    console.log(index)
+                    console.log()
+                });
+
+                this.setState({ outputDeviceId: devices[17].deviceId })
+            })
+            .catch(function (err) {
+                console.log(err.name + ": " + err.message);
+            });
+
+
     }
-
-
 }
 
 export default SoundBoard;
