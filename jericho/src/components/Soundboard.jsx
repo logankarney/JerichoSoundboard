@@ -89,7 +89,11 @@ class SoundBoard extends Component {
 
                                                                             <td>
                                                                                 <Button className={`bp3-icon-${this.state.tableSoundGroups[i].sounds[j].filepath.localeCompare('') !== 0 ? "selection" : "circle"}`}
-                                                                                    onClick={() => this.editSoundFile(i + ":" + j)} />
+                                                                                    onClick={() => this.editSoundFile(i + ":" + j, this.state.tableSoundGroups[i].sounds[j].local)} />
+                                                                            </td>
+                                                                            <td>
+                                                                                <Button className={`bp3-icon-${this.state.tableSoundGroups[i].sounds[j].local === true ? "desktop" : "globe-network"}`}
+                                                                                    onClick={() => this.editSoundSource(i + ":" + j)} />
                                                                             </td>
                                                                             <td>
                                                                                 <Button className="bp3-icon-play" onClick={() => this.playSoundCell(i, j)} />
@@ -246,7 +250,7 @@ class SoundBoard extends Component {
         const tableSoundGroups = this.state.tableSoundGroups.slice();
         let group = tableSoundGroups[groupIndex];
         let soundsLength = group.sounds.length;
-        group.sounds.push({ name: groupIndex + ":" + soundsLength, filepath: "", displayName: "" })
+        group.sounds.push({ name: groupIndex + ":" + soundsLength, filepath: "", displayName: "", local: true })
         group.open = true;
         this.setState({ tableSoundGroups: tableSoundGroups });
     }
@@ -288,19 +292,35 @@ class SoundBoard extends Component {
     }
 
 
-    editSoundFile(id) {
+    editSoundFile(id, local) {
         //tells electron to open a file dialog for audio files
 
-        let args = {
-            id: id
+        if (local) {
+            let args = {
+                id: id
+            }
+
+            ipcRenderer.send('add', args);
+
+            //sets the component's filepath
+            ipcRenderer.on('filepath' + id, (event, file) => {
+                this.editFilepathHander({ id: id, filepath: file.filepath, filename: file.filename });
+            });
         }
 
-        ipcRenderer.send('add', args);
+    }
 
-        //sets the component's filepath
-        ipcRenderer.on('filepath' + id, (event, file) => {
-            this.editFilepathHander({ id: id, filepath: file.filepath, filename: file.filename });
-        });
+    editSoundSource(id) {
+
+        let groupFile = id.split(':');
+        let groupId = groupFile[0];
+        let fileId = groupFile[1];
+
+        //Gets the list of Sounds from the appropriate group
+        let soundGroups = this.state.tableSoundGroups.slice();
+        soundGroups[groupId].sounds[fileId].local = !soundGroups[groupId].sounds[fileId].local;
+
+        this.setState({ tableSoundGroups: soundGroups });
     }
 
     editFilepathHander(fileInput) {
@@ -331,7 +351,7 @@ class SoundBoard extends Component {
             const player = new Audio(filepath);
 
 
-            if (this.state.outputDeviceId != '') {
+            if (this.state.outputDeviceId !== '') {
                 await player.setSinkId(this.state.outputDeviceId)
             }
 
